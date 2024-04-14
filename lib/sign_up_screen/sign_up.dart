@@ -15,7 +15,7 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> with WidgetsBindingObserver {
+class _SignUpState extends State<SignUp>{
   TextEditingController emailController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -32,28 +32,7 @@ class _SignUpState extends State<SignUp> with WidgetsBindingObserver {
 
 
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addObserver(this);
-  }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeMetrics() {
-    super.didChangeMetrics();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (MediaQuery.of(context).size.width < 20 ||
-          MediaQuery.of(context).size.height < 20) {
-        WidgetsBinding.instance?.window.physicalSize = Size(20, 20);
-      }
-    });
-  }
 
 
   @override
@@ -915,7 +894,7 @@ class _SignUpState extends State<SignUp> with WidgetsBindingObserver {
                                       gradient: LinearGradient(
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
-                                        colors: [HexColor('#1B3358'), mainColor], // يمكنك تحديد قائمة من الألوان هنا
+                                        colors: [HexColor('#1B3358'), mainColor],
                                       ),
                                     ),
                                     child: Center(

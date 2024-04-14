@@ -292,7 +292,7 @@ class _LoginState extends State<Login> {
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
-                                      colors: [HexColor('#1B3358'), mainColor], // يمكنك تحديد قائمة من الألوان هنا
+                                      colors: [HexColor('#1B3358'), mainColor],
                                     ),
                                   ),
                                   child: Center(

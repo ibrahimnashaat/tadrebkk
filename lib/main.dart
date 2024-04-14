@@ -9,6 +9,8 @@ import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/sign_up_screen/cubit.dart';
 import 'package:tadrebk/sign_up_screen/sign_up.dart';
 
+import 'add_training/cubit.dart';
+import 'add_training/post.dart';
 import 'login_screen/cubit.dart';
 import 'login_screen/login.dart';
 
@@ -46,11 +48,15 @@ class TadrebkApp extends StatelessWidget{
        create: (context) => RegisterCubit(),
      ),
 
+     BlocProvider(
+       create: (context) => PostCubit(),
+     ),
+
    ], child: MaterialApp(
 
    debugShowCheckedModeBanner: false,
 
-   home: SignUp(),
+   home: Post(),
 
 
     ),);
