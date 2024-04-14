@@ -11,6 +11,7 @@ import 'package:tadrebk/sign_up_screen/sign_up.dart';
 
 import 'add_training/cubit.dart';
 import 'add_training/post.dart';
+import 'get_trainings/get_all_trainings.dart';
 import 'login_screen/cubit.dart';
 import 'login_screen/login.dart';
 

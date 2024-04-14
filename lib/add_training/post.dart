@@ -270,6 +270,69 @@ class _PostState extends State<Post> {
                                             left: 40, right: 40, top: 10),
                                         child: SizedBox(
                                           width:
+                                          MediaQuery.of(context).size.width *
+                                              0.3,
+                                          height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
+                                          child: TextFormField(
+                                            keyboardType: TextInputType.name,
+                                            controller: companyNameController,
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return 'this field is empty';
+                                              }
+                                            },
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              hintText: 'Enter your Company Name',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                              focusColor: Colors.white,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                              focusedErrorBorder:
+                                              OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                              disabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 40, right: 40, top: 10),
+                                        child: SizedBox(
+                                          width:
                                               MediaQuery.of(context).size.width *
                                                   0.3,
                                           height:
@@ -754,8 +817,7 @@ class _PostState extends State<Post> {
                                                     .postImage ==
                                                 null) {
                                               PostCubit.get(context).createPost(
-                                                companyName:
-                                                    companyNameController.text,
+                                                companyName: companyNameController.text,
                                                 city: cityController.text,
                                                 street: streetController.text,
                                                 trainingSpecialization:
@@ -772,8 +834,7 @@ class _PostState extends State<Post> {
                                               );
                                             } else {
                                               PostCubit.get(context).uploadPost(
-                                                companyName:
-                                                    companyNameController.text,
+                                                companyName: companyNameController.text,
                                                 city: cityController.text,
                                                 street: streetController.text,
                                                 trainingSpecialization:
