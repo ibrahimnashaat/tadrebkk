@@ -44,6 +44,10 @@ dependencies:
   firebase_database:
   firebase_storage:
   image_picker:
+  url_launcher:
+  font_awesome_flutter:
+  fluttertoast:
+  shared_preferences:
 
 
 dev_dependencies:

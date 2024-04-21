@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tadrebk/get_trainings/get_all_trainings.dart';
 
 import '../shared/colors.dart';
 import '../shared/components.dart';
 import '../shared/fonts.dart';
 
-class GetAllTrainings extends StatefulWidget {
-  const GetAllTrainings({Key? key}) : super(key: key);
+class GetTrainings extends StatefulWidget {
+  const GetTrainings({Key? key}) : super(key: key);
 
   @override
-  State<GetAllTrainings> createState() => _GetAllTrainingsState();
+  State<GetTrainings> createState() => _GetTrainingsState();
 }
 
-class _GetAllTrainingsState extends State<GetAllTrainings> {
+class _GetTrainingsState extends State<GetTrainings> {
   String name = '';
 
   @override
@@ -144,7 +145,7 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
             ),
 
             Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+
               children: [
                 SizedBox(height: 20),
                 Padding(
@@ -227,7 +228,7 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                     left:100.0,
                     right: 100.0,
                   ),
-                    child: StreamBuilder<QuerySnapshot>(
+                  child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('posts')
                         .snapshots(),
@@ -238,19 +239,19 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                         child: CircularProgressIndicator(),
                       )
                           : GridView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
 
-                                                  shrinkWrap: true,
-                                                  gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                        shrinkWrap: true,
+                        gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:3,
                           crossAxisSpacing: 20.0,
                           mainAxisSpacing: 20.0,
-                           childAspectRatio: 0.88, // Adjust the aspect ratio as needed
+                          childAspectRatio: 0.88, // Adjust the aspect ratio as needed
 
-                                                  ),
-                                                  itemCount: snapshots.data!.docs.length,
-                                                  itemBuilder: (context, index) {
+                        ),
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
                           var data = snapshots.data!.docs[index]
                               .data() as Map<String, dynamic>;
                           if (name.isEmpty) {
@@ -288,11 +289,44 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                               context: context,
                             );
                           }
-                                                  },
-                                                );
+                        },
+                      );
                     },
                   ),
                 ),
+                SizedBox(
+                  height: 40,
+                ),
+
+                InkWell(
+                  onTap: (){
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>GetAllTrainings()), (route) => false);
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.width * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.15,
+                    decoration: BoxDecoration(
+                      color: HexColor('#B5C9E7'),
+                      borderRadius: BorderRadius.circular(10),
+                      border:Border.all(
+                          color: mainColor,
+                          width: 2
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Other Courses',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: mainFont,
+                            color: mainColor
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
                 SizedBox(
                   height: 60,
                 ),

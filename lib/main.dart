@@ -5,17 +5,27 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
+import 'package:tadrebk/profile/cubit.dart';
+import 'package:tadrebk/profile/profile.dart';
+import 'package:tadrebk/shared/cach_helper.dart';
+import 'package:tadrebk/shared/constant.dart';
 import 'package:tadrebk/sign_up_screen/cubit.dart';
 import 'package:tadrebk/sign_up_screen/sign_up.dart';
+import 'package:tadrebk/training_categories/training_categories.dart';
 
 import 'add_training/cubit.dart';
 import 'add_training/post.dart';
+import 'get_trainings/get _trainings_page.dart';
 import 'get_trainings/get_all_trainings.dart';
 import 'login_screen/cubit.dart';
 import 'login_screen/login.dart';
 
 Future<void> main() async {
+
+  await cachHelper.init();
+   FluttertoastWebPlugin();
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -28,15 +38,57 @@ Future<void> main() async {
     ),
   );
 
-  runApp(TadrebkApp());
+
+
+
+
+
+  Widget widget ;
+  uId = cachHelper.getData(key: 'uId');
+  if (uId != null){
+
+
+      widget = HomePage();
+
+
+
+  }else{
+
+      widget = Login();
+  }
+
+
+
+
+
+
+  runApp(TadrebkApp(
+      startWidget: widget
+  ));
 
 }
 
 
 
-class TadrebkApp extends StatelessWidget{
+class TadrebkApp extends StatefulWidget{
+   final Widget startWidget;
+   TadrebkApp({required this.startWidget});
 
 
+
+
+  @override
+  State<TadrebkApp> createState() => _TadrebkAppState();
+}
+
+class _TadrebkAppState extends State<TadrebkApp> {
+
+  @override
+  void setState(VoidCallback fn) {
+setState(() {    // TODO: implement setState
+  ProfileCubit.get(context).getUserData();});
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +105,15 @@ class TadrebkApp extends StatelessWidget{
        create: (context) => PostCubit(),
      ),
 
+     BlocProvider(
+       create: (context) => ProfileCubit(),
+     ),
+
    ], child: MaterialApp(
 
    debugShowCheckedModeBanner: false,
 
-   home: Post(),
+   home: widget.startWidget,
 
 
     ),);
@@ -66,8 +122,4 @@ class TadrebkApp extends StatelessWidget{
 
 
   }
-
-
-
-
 }

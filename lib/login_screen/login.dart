@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/login_screen/cubit.dart';
 import 'package:tadrebk/login_screen/state.dart';
+import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/colors.dart';
+import 'package:tadrebk/shared/components.dart';
 import 'package:tadrebk/shared/fonts.dart';
 
+import '../profile/cubit.dart';
+import '../profile/user_model.dart';
 import '../sign_up_screen/sign_up.dart';
 
 class Login extends StatefulWidget {
@@ -26,7 +32,69 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit,LoginStates>(
-      listener: (context,state){},
+      listener: (context,state){
+
+
+        if (state is LoginErrorStates){
+
+          showToast(
+              msg: 'Email or Password not true, please try again.',
+              state: ToastStates.ERORR
+          );
+
+          // cachHelper.saveData(key: 'token', value: false);
+
+        }
+        else if (state is LoginSuccessStates ) {
+
+          showToast(
+              msg: 'Welcome!',
+              state: ToastStates.SUCCESS
+          );
+
+
+
+          cachHelper.saveData(key: 'uId', value: state.uId).then(
+                  (value) {
+                ProfileCubit.get(context).getUserData();
+                UserModel? userModel ;
+
+                final uId = FirebaseAuth.instance.currentUser?.uid;
+                FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+                  userModel=UserModel.fromJson(value.data()!);
+                  if(userModel!.isPerson == 'true'){
+
+                    Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                    cachHelper.saveData(key: 'type', value: 'person');
+                  }else{
+
+                    Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                    cachHelper.saveData(key: 'type', value: 'company');
+                  }
+
+
+                }).catchError((e){
+                  print(e.toString());
+                });
+
+
+
+
+
+
+              }).catchError((error){
+
+            print(error.toString());
+
+          });
+
+        }
+
+
+
+      },
       builder: (context,state){
         return Form(
           key: _formKey,
@@ -151,7 +219,7 @@ class _LoginState extends State<Login> {
                                       keyboardType: TextInputType.emailAddress,
                                       controller: emailController,
                                       validator: (value) {
-                                        if (value!.isEmpty) {
+                                        if (value == null || value.isEmpty) {
                                           return 'this field is empty';
                                         }
                                       },
@@ -219,7 +287,7 @@ class _LoginState extends State<Login> {
                                       controller: passwordController,
                                       obscureText: LoginCubit.get(context).isNotVisible,
                                       validator: (value) {
-                                        if (value!.isEmpty) {
+                                        if (value == null || value.isEmpty) {
                                           return 'this field is empty';
                                         }
                                       },
@@ -275,12 +343,16 @@ class _LoginState extends State<Login> {
                               ),
                               child: InkWell(
                                 onTap: (){
+                                  if (_formKey.currentState!.validate()) {
+                                    LoginCubit.get(context).userLogin(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        context: context
+                                    );
 
-                                  LoginCubit.get(context).userLogin(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                      context: context
-                                  );
+                                  }
+
+
 
                                 },
                                 child: Container(
@@ -342,10 +414,9 @@ class _LoginState extends State<Login> {
                                     Expanded(
                                       child: Text('Forget Your Password',
                                       style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: mainFont,
-
-                                          color: mainColor,
+                                        fontSize: 12,
+                                        fontFamily: mainFont,
+                                        color: mainColor,
                                         decoration: TextDecoration.underline,
                                         decorationColor: mainColor,
 

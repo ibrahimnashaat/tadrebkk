@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tadrebk/home_screen/home_page.dart';
+import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/colors.dart';
 import 'package:tadrebk/sign_up_screen/state.dart';
 
 import '../login_screen/login.dart';
+import '../profile/cubit.dart';
+import '../shared/components.dart';
+import '../shared/constant.dart';
 import '../shared/fonts.dart';
 import 'cubit.dart';
 
@@ -38,7 +43,65 @@ class _SignUpState extends State<SignUp>{
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+
+
+
+
+        if (state is RegisterCreateUserSuccessStates ) {
+          cachHelper.saveData(key: 'uId', value: state.uId);
+
+
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+            cachHelper.saveData(key: 'type', value: 'person');
+
+
+
+          typeInter = isPerson.toString();
+
+
+
+          ProfileCubit.get(context).getUserData();
+
+
+
+
+
+        } else if (state is RegisterCreateCompanySuccessStates ){
+          cachHelper.saveData(key: 'uId', value: state.uId);
+
+        Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+        cachHelper.saveData(key: 'type', value: 'company');
+
+          typeInter = isPerson.toString();
+
+
+
+          ProfileCubit.get(context).getUserData();
+
+
+
+        }
+        else{
+          showToast(
+              msg: 'check your network.',
+              state: ToastStates.ERORR
+          );
+        }
+
+
+
+
+
+
+
+
+
+
+      },
       builder: (context, state) {
         return Form(
           key: _formKey,
@@ -214,7 +277,7 @@ class _SignUpState extends State<SignUp>{
                                             keyboardType: TextInputType.name,
                                             controller: firstNameController,
                                             validator: (value) {
-                                              if (value!.isEmpty) {
+                                              if (value == null || value.isEmpty) {
                                                 return 'this field is empty';
                                               }
                                             },
@@ -276,7 +339,7 @@ class _SignUpState extends State<SignUp>{
                                             keyboardType: TextInputType.name,
                                             controller: lastNameController,
                                             validator: (value) {
-                                              if (value!.isEmpty) {
+                                              if (value == null || value.isEmpty) {
                                                 return 'this field is empty';
                                               }
                                             },
@@ -339,7 +402,7 @@ class _SignUpState extends State<SignUp>{
                                        keyboardType: TextInputType.name,
                                        controller: companyNameController,
                                        validator: (value) {
-                                         if (value!.isEmpty) {
+                                         if (value == null || value.isEmpty) {
                                            return 'this field is empty';
                                          }
                                        },
@@ -403,7 +466,7 @@ class _SignUpState extends State<SignUp>{
                                         keyboardType: TextInputType.emailAddress,
                                         controller: emailController,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -468,7 +531,7 @@ class _SignUpState extends State<SignUp>{
                                         controller: passwordController,
                                         obscureText: RegisterCubit.get(context).isNotVisible,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -540,7 +603,7 @@ class _SignUpState extends State<SignUp>{
                                         controller: confirmPasswordController,
                                         obscureText: RegisterCubit.get(context).isNotVisible,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -611,7 +674,7 @@ class _SignUpState extends State<SignUp>{
                                         keyboardType: TextInputType.text,
                                         controller: specializationController,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -675,7 +738,7 @@ class _SignUpState extends State<SignUp>{
                                         keyboardType: TextInputType.phone,
                                         controller: phoneNumberController,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -739,7 +802,7 @@ class _SignUpState extends State<SignUp>{
                                         keyboardType: TextInputType.name,
                                         controller: cityController,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -803,7 +866,7 @@ class _SignUpState extends State<SignUp>{
                                         keyboardType: TextInputType.streetAddress,
                                         controller: streetController,
                                         validator: (value) {
-                                          if (value!.isEmpty) {
+                                          if (value == null || value.isEmpty) {
                                             return 'this field is empty';
                                           }
                                         },
@@ -850,39 +913,43 @@ class _SignUpState extends State<SignUp>{
                                 ),
                                 InkWell(
                                   onTap: (){
-
-                                   if(passwordController.text == confirmPasswordController.text){
-                                     if (isPerson){
-                                       RegisterCubit.get(context).userRegister(
-                                           firstName: firstNameController.text,
-                                           lastName: lastNameController.text,
-                                           email: emailController.text,
-                                           password: passwordController.text,
-                                           phoneNumber: phoneNumberController.text,
-                                           city: cityController.text,
-                                           street: streetController.text,
-                                           context: context,
-                                           isPerson: isPerson.toString()
-                                       );
-                                     }
-                                     else{
-                                       RegisterCubit.get(context).companyRegister(
-                                           name: companyNameController.text,
-                                           specialization: specializationController.text,
-                                           email: emailController.text,
-                                           password: passwordController.text,
-                                           phoneNumber: phoneNumberController.text,
-                                           city: cityController.text,
-                                           street: streetController.text,
-                                           context: context,
-                                           isPerson: isPerson.toString()
-                                       );
-                                     }
+                               if (_formKey.currentState!.validate()) {
+                                 if (passwordController.text ==
+                                     confirmPasswordController.text) {
+                                   if (isPerson) {
+                                     RegisterCubit.get(context).userRegister(
+                                         firstName: firstNameController.text,
+                                         lastName: lastNameController.text,
+                                         email: emailController.text,
+                                         password: passwordController.text,
+                                         phoneNumber: phoneNumberController
+                                             .text,
+                                         city: cityController.text,
+                                         street: streetController.text,
+                                         context: context,
+                                         isPerson: isPerson.toString()
+                                     );
                                    }
-                                   else{
-                                     print("not compatible password");
+                                   else {
+                                     RegisterCubit.get(context).companyRegister(
+                                         name: companyNameController.text,
+                                         specialization: specializationController
+                                             .text,
+                                         email: emailController.text,
+                                         password: passwordController.text,
+                                         phoneNumber: phoneNumberController
+                                             .text,
+                                         city: cityController.text,
+                                         street: streetController.text,
+                                         context: context,
+                                         isPerson: isPerson.toString()
+                                     );
                                    }
-
+                                 }
+                                 else {
+                                   print("not compatible password");
+                                 }
+                               }
 
                                   },
                                   child: Container(

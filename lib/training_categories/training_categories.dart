@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tadrebk/get_trainings/get_all_trainings.dart';
 
+import '../get_trainings/get _trainings_page.dart';
 import '../shared/colors.dart';
 import '../shared/components.dart';
 import '../shared/fonts.dart';
 
-class GetAllTrainings extends StatefulWidget {
-  const GetAllTrainings({Key? key}) : super(key: key);
+class TrainingCategories extends StatefulWidget {
+  const TrainingCategories({Key? key}) : super(key: key);
 
   @override
-  State<GetAllTrainings> createState() => _GetAllTrainingsState();
+  State<TrainingCategories> createState() => _TrainingCategoriesState();
 }
 
-class _GetAllTrainingsState extends State<GetAllTrainings> {
+class _TrainingCategoriesState extends State<TrainingCategories> {
   String name = '';
 
   @override
@@ -144,82 +146,120 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
             ),
 
             Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+
               children: [
                 SizedBox(height: 20),
+
+                Container(
+                  // height: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.52,
+
+                  child: Column(
+                    children: [
+                      Text('Training Categories',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontFamily: mainFont,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold
+                      ),
+                      ),
+                      SizedBox(height: 20),
+                      Text('Provide most popular courses that your want to join and lets start the course for the most simply way in here',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: mainFont,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold
+                      ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+
+
+                ),
+
                 Padding(
-                  padding: const EdgeInsets.only(left: 100, top: 10),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    child: Row(
-                      children: [
-                        Text(
-                          'All',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: mainFont,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          'Training',
-                          style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: mainFont,
-                              color: mainColor),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          'Of',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: mainFont,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          'Tadrebk',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: mainFont,
-                          ),
-                        ),
-                      ],
-                    ),
+                  padding: const EdgeInsets.only(left: 50,right: 50, top: 20,bottom: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      category(
+                        context,
+                          'assets/images/img_24.png',
+                          'Programming(54)'
+                      ),
+
+
+                      category(
+                          context,
+                          'assets/images/img_25.png',
+                          'Contracting(25K)'
+                      ),
+
+                      category(
+                          context,
+                          'assets/images/img_26.png',
+                          'Marketing(500)'
+                      ),
+
+                      category(
+                          context,
+                          'assets/images/img_27.png',
+                          'Accounting(15K)'
+                      ),
+
+                      category(
+                          context,
+                          'assets/images/img_28.png',
+                          'communications(4)'
+                      ),
+
+                      category(
+                          context,
+                          'assets/images/img_29.png',
+                          'Law(10K)'
+                      ),
+
+
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 100,right: 100, top: 20,bottom: 40),
-                  child: Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width: MediaQuery.of(context).size.width ,
-                    decoration: BoxDecoration(
-                        color: HexColor('#B5C9E7'),
-                        borderRadius: BorderRadius.circular(5)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(width: 80,),
-                        category(context, 'programming'),
-                        category(context, 'Contracting'),
-                        category(context, 'Marketing'),
-                        category(context, 'Accounting'),
-                        category(context, 'Communication'),
-                        SizedBox(width: 80,),
-                      ],
-                    ),
+
+                Container(
+                  // height: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.52,
+
+                  child: Column(
+                    children: [
+                      Text('Featured Training',
+                        style: TextStyle(
+                            fontSize: 32,
+                            fontFamily: mainFont,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Text('Provide most popular courses that your want to join and lets start the course for the most simply way in here',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: mainFont,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
+
+
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 Padding(
 
@@ -227,7 +267,7 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                     left:100.0,
                     right: 100.0,
                   ),
-                    child: StreamBuilder<QuerySnapshot>(
+                  child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('posts')
                         .snapshots(),
@@ -238,19 +278,19 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                         child: CircularProgressIndicator(),
                       )
                           : GridView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
 
-                                                  shrinkWrap: true,
-                                                  gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                        shrinkWrap: true,
+                        gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:3,
                           crossAxisSpacing: 20.0,
                           mainAxisSpacing: 20.0,
-                           childAspectRatio: 0.88, // Adjust the aspect ratio as needed
+                          childAspectRatio: 0.88, // Adjust the aspect ratio as needed
 
-                                                  ),
-                                                  itemCount: snapshots.data!.docs.length,
-                                                  itemBuilder: (context, index) {
+                        ),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
                           var data = snapshots.data!.docs[index]
                               .data() as Map<String, dynamic>;
                           if (name.isEmpty) {
@@ -288,11 +328,49 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                               context: context,
                             );
                           }
-                                                  },
-                                                );
+                        },
+                      );
                     },
                   ),
                 ),
+
+                SizedBox(
+                  height: 40,
+                ),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => GetTrainings()),
+                            (route) => false);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.14,
+                    height: MediaQuery.of(context).size.width * 0.03,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          HexColor('#1B3358'),
+                          mainColor
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'View All Trainings',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Poppins',
+                            fontSize: 12),
+                      ),
+                    ),
+                  ),
+                ),
+
                 SizedBox(
                   height: 60,
                 ),
@@ -311,26 +389,29 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
 
 Widget category (
     context,
-    name,
+image,
+    text
 
     ){
-  return Container(
-    height: MediaQuery.of(context).size.width * 0.04,
-    width: MediaQuery.of(context).size.width * 0.1,
-    decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5)
-    ),
-    child: Center(
-      child: Text(
-        '$name',
-        style: TextStyle(
-            fontFamily: mainFont,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: mainColor
+  return Column(
+    children: [
+      Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Image.asset(image,
+          height: MediaQuery.of(context).size.width * 0.12,
+          width: MediaQuery.of(context).size.width*0.13,
+          fit: BoxFit.cover,
         ),
       ),
-    ),
+      Text(text,
+
+        style: TextStyle(
+          color: mainColor,
+          fontSize: 12,
+          fontFamily: mainFont,
+
+        ),
+
+      ),                       ],
   );
 }
