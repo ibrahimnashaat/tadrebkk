@@ -23,11 +23,28 @@ class GetPostsErrorStates extends PostStatus
 
 class CreatePostLoadingStates extends PostStatus {}
 
-class CreatePostSuccessStates extends PostStatus {}
+class CreatePostSuccessStates extends PostStatus {
+
+}
 
 class CreatePostErrorStates extends PostStatus {
 
 }
+
+
+
+class UpdatePostLoadingStates extends PostStatus {}
+
+class UpdatePostSuccessStates extends PostStatus {
+
+}
+
+class UpdatePostErrorStates extends PostStatus {
+
+}
+
+
+
 
 class PostPeckerSuccessStates extends  PostStatus{}
 class PostPeckerErrorStates extends  PostStatus{}

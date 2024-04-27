@@ -1,15 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tadrebk/add_training/cubit.dart';
 import 'package:tadrebk/get_trainings/get_all_trainings.dart';
+import 'package:tadrebk/training_categories/category_pages.dart';
 
 import '../get_trainings/get _trainings_page.dart';
 import '../shared/colors.dart';
 import '../shared/components.dart';
 import '../shared/fonts.dart';
+import '../shared/header_widget.dart';
+import '../training_details/training_details.dart';
 
 class TrainingCategories extends StatefulWidget {
-  const TrainingCategories({Key? key}) : super(key: key);
+  final int Programming;
+  final int Contracting;
+  final int Accounting;
+  final int Marketing;
+  final int communications;
+
+
+  TrainingCategories({
+    required this.Programming,
+    required this.Contracting,
+    required this.Marketing,
+    required this.Accounting,
+    required this.communications,
+
+  });
 
   @override
   State<TrainingCategories> createState() => _TrainingCategoriesState();
@@ -18,131 +36,16 @@ class TrainingCategories extends StatefulWidget {
 class _TrainingCategoriesState extends State<TrainingCategories> {
   String name = '';
 
+
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.12,
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 0.5,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/img.png'),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Home',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Courses',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Contact Us',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'About Us',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            name = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: mainColor,
-                              width: 2,
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey.withOpacity(0.5),
-                            size: 20,
-                          ),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color:Colors.grey.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            HeaderWidget(
+              index: 1,
             ),
 
             Column(
@@ -186,41 +89,96 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      category(
-                        context,
-                          'assets/images/img_24.png',
-                          'Programming(54)'
+                      InkWell(
+                        onTap:(){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return CategoryPages(categoryName: 'Programming',);
+                              })
+                          );
+                        },
+                        child: category(
+                          context,
+                            'assets/images/img_24.png',
+                            'Programming(${widget.Programming})'
+                        ),
                       ),
 
 
-                      category(
-                          context,
-                          'assets/images/img_25.png',
-                          'Contracting(25K)'
+                      InkWell(
+                        onTap:(){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return CategoryPages(categoryName: 'Contracting',);
+                              })
+                          );
+                        },
+                        child: category(
+                            context,
+                            'assets/images/img_25.png',
+                            'Contracting(${widget.Contracting})'
+                        ),
                       ),
 
-                      category(
-                          context,
-                          'assets/images/img_26.png',
-                          'Marketing(500)'
+                      InkWell(
+                        onTap:(){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return CategoryPages(categoryName: 'Marketing',);
+                              })
+                          );
+                        },
+                        child: category(
+                            context,
+                            'assets/images/img_26.png',
+                            'Marketing(${widget.Marketing})'
+                        ),
                       ),
 
-                      category(
-                          context,
-                          'assets/images/img_27.png',
-                          'Accounting(15K)'
+                      InkWell(
+                        onTap:(){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return CategoryPages(categoryName: 'Accounting',);
+                              })
+                          );
+                        },
+                        child: category(
+                            context,
+                            'assets/images/img_27.png',
+                            'Accounting(${widget.Accounting})'
+                        ),
                       ),
 
-                      category(
-                          context,
-                          'assets/images/img_28.png',
-                          'communications(4)'
+                      InkWell(
+                        onTap:(){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return CategoryPages(categoryName: 'communications',);
+                              })
+                          );
+                        },
+                        child: category(
+                            context,
+                            'assets/images/img_28.png',
+                            'communications(${widget.communications})'
+                        ),
                       ),
 
-                      category(
-                          context,
-                          'assets/images/img_29.png',
-                          'Law(10K)'
+                      InkWell(
+                          onTap: (){
+
+                          },
+                        child: category(
+                            context,
+                            'assets/images/img_29.png',
+                            'Law(-)'
+                        ),
                       ),
 
 
@@ -269,8 +227,8 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                   ),
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
-                        .collection('posts')
-                        .snapshots(),
+                        .collection('posts').
+                        snapshots(),
                     builder: (context, snapshots) {
                       return (snapshots.connectionState ==
                           ConnectionState.waiting)
@@ -299,17 +257,20 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                               companyName: data['companyName'],
                               city: data['city'],
                               street: data['street'],
-                              trainingSpecialization:
-                              data['trainingSpecialization'],
+                              trainingSpecialization: data['trainingSpecialization'],
                               trainingCost: data['trainingCost'],
-                              trainingDescription:
-                              data['trainingDescription'],
+                              trainingDescription: data['trainingDescription'],
                               startDate: data['startDate'],
                               endDate: data['endDate'],
+                              category: data['category'],
+                              trainingName: data['trainingName'],
+                              id:data['uId'],
+                              isLiked: data['isLiked'],
+                              isPaid: data['isPaid']??'',
                               context: context,
                             );
                           }
-                          if (data['companyName']
+                          if (data['trainingName']
                               .toString()
                               .toLowerCase()
                               .startsWith(name.toLowerCase())) {
@@ -325,6 +286,11 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                               data['trainingDescription'],
                               startDate: data['startDate'],
                               endDate: data['endDate'],
+                              category: data['category'],
+                              trainingName: data['trainingName'],
+                              id:data['uId'],
+                              isLiked: data['isLiked'],
+                              isPaid: data['isPaid']??'',
                               context: context,
                             );
                           }
@@ -340,10 +306,10 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
 
                 InkWell(
                   onTap: () {
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => GetTrainings()),
-                            (route) => false);
+                           );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.14,

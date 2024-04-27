@@ -64,6 +64,7 @@ class _SignUpState extends State<SignUp>{
 
 
           ProfileCubit.get(context).getUserData();
+          ProfileCubit.get(context).getCompanyData();
 
 
 

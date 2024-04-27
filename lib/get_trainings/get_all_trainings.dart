@@ -5,6 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../shared/colors.dart';
 import '../shared/components.dart';
 import '../shared/fonts.dart';
+import '../shared/header_widget.dart';
+import '../training_categories/category_pages.dart';
 
 class GetAllTrainings extends StatefulWidget {
   const GetAllTrainings({Key? key}) : super(key: key);
@@ -22,125 +24,8 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.12,
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 0.5,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/img.png'),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Home',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Courses',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Contact Us',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'About Us',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            name = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: mainColor,
-                              width: 2,
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey.withOpacity(0.5),
-                            size: 20,
-                          ),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color:Colors.grey.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            HeaderWidget(
+              index: 1,
             ),
 
             Column(
@@ -211,11 +96,56 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(width: 80,),
-                        category(context, 'programming'),
-                        category(context, 'Contracting'),
-                        category(context, 'Marketing'),
-                        category(context, 'Accounting'),
-                        category(context, 'Communication'),
+                        InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context){
+                                    return CategoryPages(categoryName: 'Programming',);
+                                  })
+                              );
+                            },
+                            child: category(context, 'programming')),
+                        InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context){
+                                    return CategoryPages(categoryName: 'Contracting',);
+                                  })
+                              );
+                            },
+                            child: category(context, 'Contracting')),
+                        InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context){
+                                    return CategoryPages(categoryName: 'Marketing',);
+                                  })
+                              );
+                            },
+                            child: category(context, 'Marketing')),
+                        InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context){
+                                    return CategoryPages(categoryName: 'Accounting',);
+                                  })
+                              );
+                            },
+                            child: category(context, 'Accounting')),
+                        InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context){
+                                    return CategoryPages(categoryName: 'communications',);
+                                  })
+                              );
+                            },
+                            child: category(context, 'Communication')),
                         SizedBox(width: 80,),
                       ],
                     ),
@@ -266,10 +196,15 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                               data['trainingDescription'],
                               startDate: data['startDate'],
                               endDate: data['endDate'],
+                              category: data['category'],
+                              trainingName: data['trainingName'],
+                              id:data['uId'],
+                              isLiked: data['isLiked'],
+                              isPaid: data['isPaid']??'',
                               context: context,
                             );
                           }
-                          if (data['companyName']
+                          if (data['trainingName']
                               .toString()
                               .toLowerCase()
                               .startsWith(name.toLowerCase())) {
@@ -285,6 +220,11 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                               data['trainingDescription'],
                               startDate: data['startDate'],
                               endDate: data['endDate'],
+                              category: data['category'],
+                              trainingName: data['trainingName'],
+                              id:data['uId'],
+                              isLiked: data['isLiked'],
+                              isPaid: data['isPaid']??'',
                               context: context,
                             );
                           }

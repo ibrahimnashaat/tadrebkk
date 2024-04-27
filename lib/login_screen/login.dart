@@ -11,6 +11,7 @@ import 'package:tadrebk/shared/colors.dart';
 import 'package:tadrebk/shared/components.dart';
 import 'package:tadrebk/shared/fonts.dart';
 
+import '../forget_password/forget_password.dart';
 import '../profile/cubit.dart';
 import '../profile/user_model.dart';
 import '../sign_up_screen/sign_up.dart';
@@ -57,6 +58,7 @@ class _LoginState extends State<Login> {
           cachHelper.saveData(key: 'uId', value: state.uId).then(
                   (value) {
                 ProfileCubit.get(context).getUserData();
+                ProfileCubit.get(context).getCompanyData();
                 UserModel? userModel ;
 
                 final uId = FirebaseAuth.instance.currentUser?.uid;
@@ -412,16 +414,26 @@ class _LoginState extends State<Login> {
                                   ),
 
                                     Expanded(
-                                      child: Text('Forget Your Password',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: mainFont,
-                                        color: mainColor,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: mainColor,
+                                      child: InkWell(
+                                        onTap: (){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context){
+                                                return ForgetPassword();
+                                              })
+                                          );
+                                        },
+                                        child: Text('Forget Your Password',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: mainFont,
+                                          color: mainColor,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: mainColor,
 
+                                        ),
+                                                                          ),
                                       ),
-                                                                        ),
                                     ),
 
                                 ],

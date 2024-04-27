@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
+import 'package:tadrebk/my_trainings/paid_trainings.dart';
 import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/profile.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
@@ -14,13 +15,18 @@ import 'package:tadrebk/shared/constant.dart';
 import 'package:tadrebk/sign_up_screen/cubit.dart';
 import 'package:tadrebk/sign_up_screen/sign_up.dart';
 import 'package:tadrebk/training_categories/training_categories.dart';
+import 'package:tadrebk/training_details/training_details.dart';
 
 import 'add_training/cubit.dart';
 import 'add_training/post.dart';
+
+import 'favorite_page/favorite_page.dart';
+import 'forget_password/forget_password.dart';
 import 'get_trainings/get _trainings_page.dart';
 import 'get_trainings/get_all_trainings.dart';
 import 'login_screen/cubit.dart';
 import 'login_screen/login.dart';
+import 'my_trainings/my_trainings.dart';
 
 Future<void> main() async {
 
@@ -113,7 +119,14 @@ setState(() {    // TODO: implement setState
 
    debugShowCheckedModeBanner: false,
 
-   home: widget.startWidget,
+   // home: widget.startWidget,
+     home: TrainingCategories(
+       Programming: 0,
+       Contracting: 0,
+       Marketing: 0,
+       Accounting: 0,
+       communications: 0,
+     ),
 
 
     ),);

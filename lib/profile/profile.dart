@@ -9,6 +9,7 @@ import 'package:tadrebk/shared/fonts.dart';
 
 import '../login_screen/login.dart';
 import '../shared/colors.dart';
+import '../shared/header_widget.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -25,137 +26,33 @@ class _ProfileState extends State<Profile> {
       builder: (context,state){
 
 
-        final model = ProfileCubit.get(context).userModel;
-        var firstName = model?.firstName;
-        var lastName = model?.lastName;
-        var email = model?.email;
-        var phoneNumber = model?.phoneNumber;
-        var image = model?.image;
-        var city = model?.city;
-        var street = model?.street;
-        var isPerson = model?.isPerson;
+        final userModel = ProfileCubit.get(context).userModel;
+        var userFirstName = userModel?.firstName;
+        var userLastName = userModel?.lastName;
+        var userEmail = userModel?.email;
+        var userPhoneNumber = userModel?.phoneNumber;
+        var userImage = userModel?.image;
+        var userCity = userModel?.city;
+        var userStreet = userModel?.street;
+        var isUser = userModel?.isPerson;
+
+        final companyModel = ProfileCubit.get(context).companyModel;
+        var companyName = companyModel?.name;
+        var companySpecialization = companyModel?.specialization;
+        var companyEmail = companyModel?.email;
+        var companyPhoneNumber = companyModel?.phoneNumber;
+        var companyImage = companyModel?.image;
+        var companyCity = companyModel?.city;
+        var companyStreet = companyModel?.street;
+        var isCompany = companyModel?.isPerson;
 
 
         return  Scaffold(
           body: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 0.5,
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        InkWell(
-                            onTap: (){
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => HomePage()), (route) => false,
-                              );
-                            },
-                            child: Image.asset('assets/images/img.png')),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap:(){
-                          Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()), (route) => false,
-                          );
-                          },
-                                    child: Text(
-                                      'Home',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: mainColor,
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Courses',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: mainColor,
-                                      fontFamily: "Poppins",
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Contact Us',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: mainColor,
-                                      fontFamily: "Poppins",
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'About Us',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: mainColor,
-                                      fontFamily: "Poppins",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            CircleAvatar(
-                                radius: 45,
-                                backgroundColor: Colors.black12,
-                                backgroundImage:image == null ?
-                                AssetImage('assets/images/img_23.png') as ImageProvider :
-                                NetworkImage('$image')
-                            ),
-                            SizedBox(
-                              width: 6,
-                            ),
-                            Text(
-                              firstName??'Loading..',
-                              style: TextStyle(
-                                  fontSize: 16 ,
-                                  color: mainColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: mainFont),
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Icon(Icons.arrow_drop_down_sharp),
-
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                HeaderWidget(
+                  index: 4,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -178,7 +75,7 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            firstName ??'Loading..',
+                            isUser == 'true' ? userFirstName??'Loading..' : companyName??'Loading..',
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white,
@@ -222,7 +119,7 @@ class _ProfileState extends State<Profile> {
                                     height: 6,
                                   ),
                                   Text(
-                                    '$firstName',
+                                    '${isUser == 'true' ? userFirstName : companyName}',
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w600,
@@ -273,7 +170,7 @@ class _ProfileState extends State<Profile> {
                                     ],
                                   ),
                                   Divider(),
-                                 isPerson == "true" ?Row(
+                                 isUser == "true" ?Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Padding(
@@ -294,9 +191,11 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ],
                                   ) : Container(),
-                                  isPerson == "true" ? Divider() : Container(),
+                                  isUser == "true" ? Divider() : Container(),
                                   InkWell(
                                     onTap: (){
+
+                                      ProfileCubit.get(context).resetUserAndCompanyData();
                                       cachHelper.removeData('uId').then((value) async {
                                         cachHelper.removeData('type');
                                         Navigator.pushAndRemoveUntil(
@@ -346,7 +245,7 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Welcome, $firstName',
+                                    'Welcome, ${isUser == 'true' ? userFirstName: companyName}',
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w600,
@@ -414,7 +313,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                       ),
-                                      isPerson == "true"
+                                      isUser == "true"
                                           ? Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),

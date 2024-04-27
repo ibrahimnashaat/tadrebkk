@@ -5,6 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tadrebk/profile/company_model.dart';
 import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/profile/user_model.dart';
 
@@ -20,6 +21,7 @@ class ProfileCubit extends Cubit<ProfileStatus> {
 
   Future<void> getUserData()
   async {
+
     emit(ProfileGetUserLoadingStates());
     final uId = FirebaseAuth.instance.currentUser?.uid;
     await FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
@@ -33,6 +35,45 @@ class ProfileCubit extends Cubit<ProfileStatus> {
 
 
   }
+
+
+
+
+
+
+  CompanyModel? companyModel;
+
+
+  Future<void> getCompanyData()
+  async {
+    emit(ProfileGetCompanyLoadingStates());
+    final uId = FirebaseAuth.instance.currentUser?.uid;
+    await FirebaseFirestore.instance.collection('companies').doc(uId).get().then((value) {
+      companyModel=CompanyModel.fromJson(value.data()!);
+      print(companyModel!.uId);
+
+      emit(ProfileGetCompanySuccessStates());
+    }).catchError((e){
+      emit(ProfileGetCompanyErrorStates());
+    });
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  void resetUserAndCompanyData() {
+    userModel = null;
+    companyModel = null;
+  }
+
 
 
 

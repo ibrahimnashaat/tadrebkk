@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,6 +16,7 @@ import '../login_screen/login.dart';
 import '../profile/cubit.dart';
 import '../profile/states.dart';
 import '../shared/fonts.dart';
+import '../shared/header_widget.dart';
 import '../training_categories/training_categories.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,6 +36,7 @@ void initState() {
 
   isLoggedIn = cachHelper.getData(key: 'type')!=null;
   ProfileCubit.get(context).getUserData();
+  ProfileCubit.get(context).getCompanyData();
 
     // TODO: implement initState
     super.initState();
@@ -46,17 +50,6 @@ void initState() {
       builder: (context,state){
 
 
-        final model = ProfileCubit.get(context).userModel;
-        var firstName = model?.firstName;
-        var lastName = model?.lastName;
-        var email = model?.email;
-        var phoneNumber = model?.phoneNumber;
-        var image = model?.image;
-        var city = model?.city;
-        var street = model?.street;
-        var isPerson = model?.isPerson;
-
-
         return Scaffold(
           body: Container(
               width: MediaQuery.of(context).size.width,
@@ -65,190 +58,11 @@ void initState() {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              offset: Offset(0, 4),
-                            ),
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/img.png'),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            ),
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Home',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: mainColor,
-                                          fontFamily: "Poppins",
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: (){
-                                          // Navigator.pushAndRemoveUntil(
-                                          // context,
-                                          // MaterialPageRoute(builder: (context) => TrainingCategories()), (route) => false,
-                                          // );
-                                        },
-                                        child: Text(
-                                          'Courses',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: mainColor,
-                                            fontFamily: "Poppins",
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        'Contact Us',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: mainColor,
-                                          fontFamily: "Poppins",
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        'About Us',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: mainColor,
-                                          fontFamily: "Poppins",
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            isLoggedIn == false ? Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => Login()),
-                                            (route) => false);
-                                  },
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.06,
-                                    height: MediaQuery.of(context).size.width * 0.03,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: mainColor, // Outline color
-                                        width: 1, // Outline width
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(
-                                            color: mainColor,
-                                            fontFamily: 'Poppins',
-                                            fontSize: 18),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => SignUp()),
-                                            (route) => false);
-                                  },
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.1,
-                                    height: MediaQuery.of(context).size.width * 0.03,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          HexColor('#1B3358'),
-                                          mainColor
-                                        ],
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Sign Up',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Poppins',
-                                            fontSize: 18),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ): InkWell(
-                              onTap: (){
 
-                                Navigator.pushAndRemoveUntil(context,
-                                    MaterialPageRoute(builder: (context) => const Profile()), (route) => false);
-
-
-                              },
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundColor: Colors.black12,
-                                      backgroundImage:image == null ?
-                                      AssetImage('assets/images/img_23.png') as ImageProvider :
-                                      NetworkImage('$image')
-                                  ),
-                                  SizedBox(
-                                    width: 6,
-                                  ),
-                                  Text(
-                                    firstName??'Loading..',
-                                    style: TextStyle(
-                                        fontSize: 16 ,
-                                        color: mainColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: mainFont),
-                                  ),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Icon(Icons.arrow_drop_down_sharp),
-
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    HeaderWidget(
+                      index: 0,
                     ),
+
                     Stack(
                       children: [
                         Image.asset('assets/images/img_1.png',
@@ -521,47 +335,333 @@ void initState() {
                         ),
                       ],
                     ),
+
+                    SizedBox(
+                      height: 100,
+                    ),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width*0.12,
+                      height: MediaQuery.of(context).size.width*0.03,
+                      color: mainColor,
+                      child: Center(child: Text('OUR SERVICES',
+
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: mainFont,
+                            color: Colors.white
+                        ),
+                      ),),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height*0.7,
+
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20,right: 40),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            introComponents(
+                                context,
+                                'assets/images/img_18.png',
+                                'Training',
+                                '"Explore the realm of knowledge and gain new skills through our innovative platform for course delivery. Embark on an exciting learning journey and acquire life-changing'
+
+                            ),
+                            introComponents(
+                                context,
+                                'assets/images/img_19.png',
+                                'Certificate',
+                                '"We provide certified credentials upon successfully completing courses, enhancing job opportunities and personal professional development'
+
+                            ),
+                            introComponents(
+                                context,
+                                'assets/images/img_20.png',
+                                'Find your training',
+                                '"The search feature enables users to easily find relevant courses based on their interests and needs'
+                            ),
+                            introComponents(
+                                context,
+                                'assets/images/img_21.png',
+                                'Add Training',
+                                '"The platform enables companies to provide customized training and effectively track participant progress'
+                            ),
+                            SizedBox(width: 4,),
+
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Container(
+
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height*0.95,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1
+                        ),
+                      ),
+
+
+                      child: Center(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Text('OUR TRAININGS',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: mainFont,
+                                  color: mainColor
+                              ),
+
+
+
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+
+                            Padding(
+
+                              padding: const EdgeInsets.only(
+                                left:100.0,
+                                right: 100.0,
+                              ),
+                              child: StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection('posts')
+                                    .snapshots(),
+                                builder: (context, snapshots) {
+                                  return (snapshots.connectionState ==
+                                      ConnectionState.waiting)
+                                      ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                      : GridView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:3,
+                                      crossAxisSpacing: 20.0,
+                                      mainAxisSpacing: 20.0,
+                                      childAspectRatio: 0.88, // Adjust the aspect ratio as needed
+
+                                    ),
+                                    itemCount: 3,
+                                    itemBuilder: (context, index) {
+                                      var data = snapshots.data!.docs[index]
+                                          .data() as Map<String, dynamic>;
+
+                                        return trainingID(
+                                          image: data['image'] ?? '',
+                                          companyName: data['companyName'],
+                                          city: data['city'],
+                                          street: data['street'],
+                                          trainingSpecialization:
+                                          data['trainingSpecialization'],
+                                          trainingCost: data['trainingCost'],
+                                          trainingDescription:
+                                          data['trainingDescription'],
+                                          startDate: data['startDate'],
+                                          endDate: data['endDate'],
+                                          category: data['category'],
+                                          trainingName: data['trainingName'],
+                                          id:data['uId'],
+                                          isLiked: data['isLiked'],
+                                          isPaid: data['isPaid']??'',
+                                          context: context,
+                                        );
+
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.12,
+                              height: MediaQuery.of(context).size.width*0.03,
+                              color: mainColor,
+                              child: Center(child: Text('View Courses',
+
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: mainFont,
+                                    color: Colors.white
+                                ),
+                              ),),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height*0.66,
-                      color: HexColor('#333333'),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      decoration: BoxDecoration(
+
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            HexColor('#1B3358'),
+                            mainColor
+                          ],
+                        ),
+                      ),
+
+                      child: Column(
                         children: [
-                          introComponents(
-                              context,
-                              'assets/images/img_18.png',
-                              'Training',
-                              '"Explore the realm of knowledge and gain new skills through our innovative platform for course delivery. Embark on an exciting learning journey and acquire life-changing'
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Customer reviews',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: mainFont,
+                              color: Colors.white
+                            ),
+
+
 
                           ),
-                          introComponents(
-                              context,
-                              'assets/images/img_19.png',
-                              'Certificate',
-                              '"We provide certified credentials upon successfully completing courses, enhancing job opportunities and personal professional development'
+                          SizedBox(
+                            height: 80,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 100,right: 100),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                reviewWidget(context,
+                                    'Emad abdu',
+                                    'Cairo,Egypt',
+                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                ),
+                                reviewWidget(context,
+                                    'Emad abdu',
+                                    'Cairo,Egypt',
+                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                ),
+                                reviewWidget(context,
+                                    'Emad abdu',
+                                    'Cairo,Egypt',
+                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                ),
 
+                              ],
+                            ),
                           ),
-                          introComponents(
-                              context,
-                              'assets/images/img_20.png',
-                              'Find your training',
-                              '"The search feature enables users to easily find relevant courses based on their interests and needs'
-                          ),
-                          introComponents(
-                              context,
-                              'assets/images/img_21.png',
-                              'Add Training',
-                              '"The platform enables companies to provide customized training and effectively track participant progress'
-                          ),
-                          SizedBox(width: 4,),
 
                         ],
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height*0.34,
+                      height: MediaQuery.of(context).size.height*0.8,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 100,right: 100),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               Text('+30K ',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                               Text('Training ',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                             ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 100,right: 100),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               Text('+50K ',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                               Text('views',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                             ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 100,right: 100),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               Text('+50K',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                               Text('Happy customers',
+                                 style: TextStyle(
+                                     fontSize: 35,
+                                     color: mainColor,
+                                     fontFamily: mainFont,
+                                 ),
+
+
+                               ),
+                             ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     footerPage(context),
                   ],
@@ -638,7 +738,7 @@ text2
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     fontFamily: mainFont,
-                    color:Colors.white,
+
                   letterSpacing: 1.5
                 ),
                 textAlign: TextAlign.start,
@@ -653,6 +753,152 @@ text2
   );
 }
 
+
+
+Widget reviewWidget(
+    context,
+    name,
+    address,
+    description
+    ){
+  return  SizedBox(
+    child: Container( width: MediaQuery.of(context).size.width*0.26,
+      height: MediaQuery.of(context).size.height*0.32,
+      child: Card(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20,top: 10,),
+              child: Container(
+                width: MediaQuery.of(context).size.width*0.26,
+                height: MediaQuery.of(context).size.height*0.14,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: mainColor,
+                      radius: 30,
+                      backgroundImage: AssetImage('assets/images/img_34.png'),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 14,bottom: 14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(name,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: mainFont,
+
+                              ),
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+
+
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(address,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: mainFont,
+                                  color: Colors.grey
+
+                              ),
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+
+
+                            ),
+                          ),
+                          Row(
+                            children: [
+
+
+                              Text(
+                                '4.9',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: 'Arial',
+                                    fontWeight: FontWeight.bold,
+                                    color: mainColor
+                                ),
+                              ),
+
+                              SizedBox(width: 5),
+
+
+                              Icon(
+                                Icons.star,
+                                color: mainColor,
+                                size: 14,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: mainColor,
+                                size: 14,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: mainColor,
+                                size: 14,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: mainColor,
+                                size: 14,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: mainColor,
+                                size: 14,
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 10,bottom: 20),
+              child: Text(
+                description,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: mainFont,
+                    color: Colors.grey
+
+
+                ),
+                textAlign: TextAlign.start,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+
+
+              ),
+            ),
+          ],
+        ),
+
+      ),
+    ),
+  );
+}
 
 
 

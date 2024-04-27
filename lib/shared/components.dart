@@ -225,6 +225,9 @@ import 'package:tadrebk/shared/colors.dart';
 import 'package:tadrebk/shared/fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../add_training/cubit.dart';
+import '../training_details/training_details.dart';
+
 Widget trainingID({
   required String city,
   required String image,
@@ -236,6 +239,11 @@ Widget trainingID({
   required String trainingDescription,
   required String startDate,
   required String endDate,
+  required String category,
+  required String trainingName,
+  required String id,
+  required String isLiked,
+  required String isPaid,
 }) =>
     Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -274,7 +282,7 @@ Widget trainingID({
                   )
               ),
               Padding(
-                padding: const EdgeInsets.only (top: 10,left: 10),
+                padding: const EdgeInsets.only (top: 10,left: 10,right: 10),
                 child: Row(
                   children: [
                     Text(
@@ -290,6 +298,42 @@ Widget trainingID({
                       Icons.star,
                       color: Colors.amberAccent,
                       size: 20,
+                    ),
+
+                    Spacer(),
+
+                    CircleAvatar(
+
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
+                      child: InkWell(
+                        onTap: (){
+                          String? favorite ;
+                        isLiked == 'true' ? favorite = 'false': favorite ='true';
+                        PostCubit.get(context).updatePost(
+                          image: image,
+                          companyName: companyName,
+                          category: category,
+                          trainingName: trainingName,
+                          city: city,
+                          street: street,
+                          trainingSpecialization: trainingSpecialization,
+                          trainingCost: trainingCost,
+                          trainingDescription: trainingDescription,
+                          startDate: startDate,
+                          endDate: endDate,
+                          id:id,
+                          isLiked: favorite,
+                          isPaid: isPaid,
+                        );
+                        },
+                        child: Icon(
+                          isLiked == 'true' ?Icons.favorite:Icons.favorite_outline_rounded,
+                          color: isLiked == 'true' ?mainColor: Colors.grey,
+                        ),
+                      ),
+
+
                     ),
 
 
@@ -322,7 +366,7 @@ Widget trainingID({
                   Padding(
                     padding: const EdgeInsets.only(left: 20,right: 20,),
                     child: Expanded(
-                      child: Text(companyName,
+                      child: Text(trainingName,
                         style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -338,26 +382,55 @@ Widget trainingID({
               ),
               Spacer(),
 
-              Padding(
-                padding: const EdgeInsets.only(right: 20,),
-                child: Container(
-                  height: MediaQuery.of(context).size.width * 0.025,
-                  width: MediaQuery.of(context).size.width * 0.06,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border:Border.all(
-                        color: mainColor,
-                        width: 2
+              InkWell(
+                onTap: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context){
+                      return TrainingDetails(
+                        image: image,
+                        companyName: companyName,
+                        city: city,
+                        street: street,
+                        specialization: trainingSpecialization,
+                        cost: trainingCost,
+                        description: trainingDescription,
+                        startDate: startDate,
+                        endDate: endDate,
+                        category: category,
+                        trainingName: trainingName,
+                        id:id,
+                        isLiked: isLiked,
+                        isPaid: isPaid,
+
+                      );
+                    }
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'View',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: mainFont,
-                          color: mainColor
+                  );
+
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20,),
+                  child: Container(
+                    height: MediaQuery.of(context).size.width * 0.025,
+                    width: MediaQuery.of(context).size.width * 0.06,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border:Border.all(
+                          color: mainColor,
+                          width: 2
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'View',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: mainFont,
+                            color: mainColor
+                        ),
                       ),
                     ),
                   ),

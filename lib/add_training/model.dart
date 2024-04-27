@@ -5,6 +5,7 @@ class PostModel {
 
 
  String? companyName;
+ String? trainingName;
  String? city;
  String? street;
  String? trainingSpecialization;
@@ -12,6 +13,11 @@ class PostModel {
  String? trainingDescription;
  String? startDate;
  String? endDate;
+
+ String? category;
+ String? isLiked;
+ String? companyUid;
+ String? isPaid;
 
 
 
@@ -26,12 +32,19 @@ class PostModel {
     required this.trainingDescription,
     required this.startDate,
     required this.endDate,
+    required this.trainingName,
+    required this.category,
+    required this.isLiked,
+    required this.companyUid,
+    required this.isPaid,
 
   });
 
   PostModel.fromJson(Map<String ,dynamic > json){
 
     companyName = json['companyName'];
+    category = json['category'];
+    trainingName = json['trainingName'];
     city = json['city'];
     uId = json['uId'];
     image = json['image'];
@@ -41,6 +54,9 @@ class PostModel {
     trainingDescription = json['trainingDescription'];
     startDate = json['startDate'];
     endDate = json['endDate'];
+    isLiked = json['isLiked'];
+    companyUid = json['companyUid'];
+    isPaid = json['isPaid'];
 
 
   }
@@ -51,6 +67,8 @@ class PostModel {
       'uId' : uId,
       'image':image,
       'companyName':companyName,
+      'trainingName':trainingName,
+      'category':category,
       'city':city,
       'street':street,
       'trainingSpecialization':trainingSpecialization,
@@ -58,6 +76,9 @@ class PostModel {
       'trainingDescription':trainingDescription,
       'startDate':startDate,
       'endDate':endDate,
+      'isLiked':isLiked,
+      'companyUid':companyUid,
+      'isPayed':isPaid,
 
     };
 
