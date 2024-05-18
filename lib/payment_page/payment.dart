@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/add_training/cubit.dart';
+import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/components.dart';
 
 import '../shared/colors.dart';
@@ -49,13 +51,17 @@ class _PaymentState extends State<Payment> {
 
 
   final _formKey = GlobalKey<FormState>();
+  String selectedDateText = '';
 
   @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
+  Widget build(BuildContext context){
+  final windowWidth = MediaQuery.of(context).size.width;
+  final windowHeight = MediaQuery.of(context).size.height;
+
+    return windowWidth >=1100 && windowHeight >=600 ? AlertDialog(
       title: Row(
         children: [
-          Text('paying off',
+          LocaleText('paying_off',
 
             style: TextStyle(
                 fontFamily: mainFont,
@@ -82,7 +88,7 @@ class _PaymentState extends State<Payment> {
           SizedBox(
             height: 30,
           ),
-          Text('payment method',
+          LocaleText('payment_method',
 
             style: TextStyle(
                 fontFamily: mainFont
@@ -106,7 +112,7 @@ class _PaymentState extends State<Payment> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('Card payment',
+                    LocaleText('card_payment',
 
                       style: TextStyle(
                           fontFamily: mainFont,
@@ -136,7 +142,7 @@ class _PaymentState extends State<Payment> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('pay cash',
+                    LocaleText('pay_cash',
 
                       style: TextStyle(
                           fontFamily: mainFont,
@@ -174,7 +180,7 @@ class _PaymentState extends State<Payment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('card number',
+                      LocaleText('card_number',
                         style: TextStyle(
                             fontSize: 12,
                             fontFamily: mainFont,
@@ -250,7 +256,7 @@ class _PaymentState extends State<Payment> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('cvv',
+                              LocaleText('cvv',
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: mainFont,
@@ -318,7 +324,7 @@ class _PaymentState extends State<Payment> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Expiry Date',
+                              LocaleText('expiry_date',
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: mainFont,
@@ -328,52 +334,122 @@ class _PaymentState extends State<Payment> {
                               SizedBox(
                                 height: 4,
                               ),
-                              SizedBox(
-                                height: 34,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.emailAddress,
-                                  controller: TextEditingController(),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'this field is empty';
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.transparent,
-                                    hintText: '12/2026',
+                              // SizedBox(
+                              //   height: 34,
+                              //   child: TextFormField(
+                              //     keyboardType: TextInputType.emailAddress,
+                              //     controller: TextEditingController(),
+                              //     validator: (value) {
+                              //       if (value == null || value.isEmpty) {
+                              //         return 'this field is empty';
+                              //       }
+                              //     },
+                              //     decoration: InputDecoration(
+                              //       filled: true,
+                              //       fillColor: Colors.transparent,
+                              //       hintText: '12/2026',
+                              //
+                              //       hintStyle: TextStyle(color: Colors.grey,fontSize: 14),
+                              //       focusColor: Colors.white,
+                              //       focusedBorder: OutlineInputBorder(
+                              //
+                              //         borderSide: BorderSide(
+                              //           color: mainColor,
+                              //         ),
+                              //       ),
+                              //       focusedErrorBorder: OutlineInputBorder(
+                              //
+                              //         borderSide: BorderSide(
+                              //           color:mainColor,
+                              //         ),
+                              //       ),
+                              //       disabledBorder: OutlineInputBorder(
+                              //
+                              //         borderSide: BorderSide(
+                              //           color: mainColor,
+                              //         ),
+                              //       ),
+                              //       enabledBorder: OutlineInputBorder(
+                              //
+                              //         borderSide: BorderSide(
+                              //           color: mainColor,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
 
-                                    hintStyle: TextStyle(color: Colors.grey,fontSize: 14),
-                                    focusColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
 
-                                      borderSide: BorderSide(
-                                        color: mainColor,
+
+                          SizedBox(
+                          height: 34,
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: ColorScheme.light().copyWith(
+                                        primary: mainColor, // تعيين لون الزر الرئيسي
                                       ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-
-                                      borderSide: BorderSide(
-                                        color:mainColor,
-                                      ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                              if (selectedDate != null) {
+                                setState(() {
+                                  selectedDateText = '${selectedDate.month}/${selectedDate.year}';
+                                });
+                              }
+                            },
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                keyboardType: TextInputType.datetime,
+                                controller: TextEditingController(text: selectedDateText),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'this field is empty';
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.transparent,
+                                  hintText: 'Select Date',
+                                  hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                  focusColor: Colors.white,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: mainColor,
                                     ),
-                                    disabledBorder: OutlineInputBorder(
-
-                                      borderSide: BorderSide(
-                                        color: mainColor,
-                                      ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: mainColor,
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-
-                                      borderSide: BorderSide(
-                                        color: mainColor,
-                                      ),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: mainColor,
                                     ),
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                        ),
 
-                            ],
+
+                      ],
                           ),
                         ),
                       ],
@@ -416,6 +492,8 @@ class _PaymentState extends State<Payment> {
                         image: widget.image
                       );
 
+                      cachHelper.saveData(key: 'isPaid', value: true);
+
                       Navigator.pop(context);
                       showToast(msg: 'Paid Successfully', state:ToastStates.SUCCESS );
 
@@ -453,6 +531,6 @@ class _PaymentState extends State<Payment> {
         ],
       ),
 
-    );
+    ) : Container();
   }
 }

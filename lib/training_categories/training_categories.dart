@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/add_training/cubit.dart';
 import 'package:tadrebk/get_trainings/get_all_trainings.dart';
@@ -40,7 +41,12 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+
+    final windowWidth = MediaQuery.of(context).size.width;
+    final windowHeight = MediaQuery.of(context).size.height;
+
+
+    return  windowWidth >=1100 && windowHeight >=600 ?Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -59,7 +65,7 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
 
                   child: Column(
                     children: [
-                      Text('Training Categories',
+                      LocaleText('training_categories',
                       style: TextStyle(
                         fontSize: 32,
                         fontFamily: mainFont,
@@ -68,7 +74,7 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                       ),
                       ),
                       SizedBox(height: 20),
-                      Text('Provide most popular courses that your want to join and lets start the course for the most simply way in here',
+                      LocaleText('popular_courses',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: mainFont,
@@ -192,7 +198,7 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
 
                   child: Column(
                     children: [
-                      Text('Featured Training',
+                      LocaleText('featured_training',
                         style: TextStyle(
                             fontSize: 32,
                             fontFamily: mainFont,
@@ -201,7 +207,7 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Text('Provide most popular courses that your want to join and lets start the course for the most simply way in here',
+                      LocaleText('popular_courses',
                         style: TextStyle(
                             fontSize: 20,
                             fontFamily: mainFont,
@@ -326,8 +332,8 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
                       ),
                     ),
                     child: Center(
-                      child: Text(
-                        'View All Trainings',
+                      child: LocaleText(
+                        'view_trainings',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
@@ -346,7 +352,7 @@ class _TrainingCategoriesState extends State<TrainingCategories> {
           ],
         ),
       ),
-    );
+    ) : Container();
 
 
   }

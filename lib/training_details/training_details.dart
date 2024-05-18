@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tadrebk/certificate/certificate.dart';
 import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
@@ -15,7 +17,6 @@ import '../shared/header_widget.dart';
 import '../sign_up_screen/sign_up.dart';
 
 class TrainingDetails extends StatefulWidget {
-
   final String description;
   final String companyName;
   final String trainingName;
@@ -53,30 +54,21 @@ class TrainingDetails extends StatefulWidget {
 }
 
 class _TrainingDetailsState extends State<TrainingDetails> {
-
-  bool isLoggedIn=false;
-
+  bool isLoggedIn = false;
 
   @override
   void initState() {
-
-    isLoggedIn = cachHelper.getData(key: 'type')!=null;
+    isLoggedIn = cachHelper.getData(key: 'type') != null;
     ProfileCubit.get(context).getUserData();
 
-    // TODO: implement initState
     super.initState();
-
-    print(widget.image);
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit,ProfileStatus>(
-      listener: (context ,state){},
-      builder: (context,state){
-
-
+    return BlocConsumer<ProfileCubit, ProfileStatus>(
+      listener: (context, state) {},
+      builder: (context, state) {
         final model = ProfileCubit.get(context).userModel;
         var firstName = model?.firstName;
         var lastName = model?.lastName;
@@ -87,655 +79,407 @@ class _TrainingDetailsState extends State<TrainingDetails> {
         var street = model?.street;
         var isPerson = model?.isPerson;
 
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
 
-
-        return Scaffold(
+        return windowWidth >= 1100 && windowHeight >= 600
+            ? Scaffold(
           body: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    HeaderWidget(
-                      index: 1,
-                    ),
-
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: secondColor,
-                      child: Row(
-                        children: [
-
-
-
-                          Container(
-                              width: MediaQuery.of(context).size.width*0.7,
-                              height: MediaQuery.of(context).size.height,
+            width: windowWidth,
+            height: windowHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  HeaderWidget(
+                    index: 1,
+                  ),
+                  Container(
+                    width: windowWidth,
+                    height: windowHeight * 1.1,
+                    color: secondColor,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: windowWidth * 0.7,
+                          height: windowHeight,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Container(
+                                width: windowWidth * 0.6,
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          LocaleText(
+                                            'about',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontFamily: mainFont,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "  ${widget.trainingName}",
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontFamily: mainFont,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        '- ${widget.description}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: mainFont,
+                                          color: mainColor,
+                                        ),
+                                        maxLines: null,
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                width: windowWidth * 0.6,
+                                child: Card(
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        LocaleText(
+                                          'details',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontFamily: mainFont,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 20, right: 20),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    buildDetailRow(
+                                                        'training_name_t', widget.trainingName),
+                                                    buildDetailRow(
+                                                        'training_specialization', widget.specialization),
+                                                    buildDetailRow(
+                                                        'training_cost_t', widget.cost),
+                                                    buildDetailRow(
+                                                        'start_date', widget.startDate),
+                                                    buildDetailRow('end_date', widget.endDate),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(width: 20),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    buildDetailRow('city_t', widget.city),
+                                                    buildDetailRow('street_t', widget.street),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 1.1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  height: 40,
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.25,
+                                  height: MediaQuery.of(context).size.height * 0.3,
+                                  child: Card(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    color: Colors.white,
+                                    child: widget.image == ''
+                                        ? Image.asset('assets/images/img_23.png')
+                                        : Image.network(
+                                      widget.image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                                 Container(
-                                     width: MediaQuery.of(context).size.width*0.6,
-                                     height: MediaQuery.of(context).size.height*0.32,
-                                   color: Colors.white,
-                                   child: Padding(
-                                     padding: const EdgeInsets.all(10.0),
-                                     child: Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text('About SEO',
-                                         style: TextStyle(
-                                           fontSize: 24,
-                                           fontFamily: mainFont,
-                                           fontWeight: FontWeight.bold,
-                                         ),
-                                         ),
-                                         SizedBox(
-                                           height: 5,
-                                         ),
-                                         Expanded(
-                                           child: Text('- ${widget.description}',
-                                           style: TextStyle(
-                                             fontSize: 14,
-                                             fontFamily: mainFont,
-                                             color: mainColor
-                                           ),
-                                             maxLines: 5,
-                                             overflow: TextOverflow.ellipsis,
-
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   ),
-                                 ),
-                                SizedBox(
-                                  height: 20,
+                                SizedBox(height: 20),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.25,
+                                  height: MediaQuery.of(context).size.height * 0.64,
+                                  child: Card(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: double.infinity,
+                                          height: MediaQuery.of(context).size.height * 0.08,
+                                          color: mainColor,
+                                          child: Center(
+                                            child: LocaleText(
+                                              'training_details',
+                                              style: TextStyle(
+                                                fontSize: 22,
+                                                fontFamily: mainFont,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        detailRow('training_name', widget.trainingName),
+                                        Divider(),
+                                        detailRow('lessons', '15 Lessons'),
+                                        Divider(),
+                                        detailRow('training_time', '${widget.startDate} to ${widget.endDate}'),
+                                        Divider(),
+                                        detailRow('training_cost', widget.cost),
+                                        Divider(),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: LocaleText(
+                                            'not_required',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: mainFont,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 5,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Divider(),
+                                        Spacer(),
+                                        ratingRow(),
+                                        SizedBox(height: 10),
+                                        applyButton(context),
+                                        SizedBox(height: 10),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                 Container(
-                                     width: MediaQuery.of(context).size.width*0.6,
-                                     height: MediaQuery.of(context).size.height*0.4,
-
-                                   child: Card(
-                                     color: Colors.white,
-                                     child: Padding(
-                                       padding: const EdgeInsets.all(10.0),
-                                       child: Column(
-                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                         children: [
-                                           Text('Details',
-                                           style: TextStyle(
-                                             fontSize: 24,
-                                             fontFamily: mainFont,
-                                             fontWeight: FontWeight.bold,
-                                           ),
-                                           ),
-                                           SizedBox(
-                                             height: 10,
-                                           ),
-                                           Padding(
-                                             padding: const EdgeInsets.only(left: 20,right: 20),
-                                             child: Row(
-                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                               children: [
-                                                 Column(
-                                                   children: [
-                                                     SizedBox(
-                                             width: MediaQuery.of(context).size.width*0.22,
-                                                                                    height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('Training Name',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text(widget.trainingName,
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                               fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('Training Specialization',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.specialization}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('Training Cost',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.cost}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('Start Date',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.startDate}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('End Date',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.endDate}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                   ],
-                                                 ),
-                                                Spacer(),
-                                                 Column(
-                                                   mainAxisAlignment: MainAxisAlignment.start,
-                                                   children: [
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('City',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.city}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                     SizedBox(
-                                                       width: MediaQuery.of(context).size.width*0.22,
-                                                       height: MediaQuery.of(context).size.height*0.05,
-                                                       child: Row(
-                                                         children: [
-                                                           Text('Street',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-                                                           Spacer(),
-                                                           Text('${widget.street}',
-                                                             style: TextStyle(
-                                                                 fontSize: 14,
-                                                                 fontFamily: mainFont,
-                                                                 color: mainColor,
-                                                                 fontWeight: FontWeight.bold
-                                                             ),
-                                                             maxLines: 5,
-                                                             overflow: TextOverflow.ellipsis,
-
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                   ],
-                                                 ),
-                                               ],
-                                             ),
-                                           ),
-                                         ],
-                                       ),
-                                     ),
-                                   ),
-                                 ),
                               ],
                             ),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.3,
-                            height: MediaQuery.of(context).size.height,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*0.25,
-                                    height: MediaQuery.of(context).size.height*0.3,
-                                    child: Card(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: Colors.white,
-                                      child: widget.image == '' ?
-                                      Image.asset('assets/images/img_23.png'):
-                                      Image.network('${widget.image}',fit: BoxFit.cover,),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*0.25,
-                                    height: MediaQuery.of(context).size.height*0.6,
-                                    child: Card(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: Colors.white,
-                                      child:Column(
-                                       children: [
-                                         Container(
-                                           width: double.infinity,
-
-                                           height: MediaQuery.of(context).size.height*0.08,
-                                           color: mainColor,
-                                           child: Center(
-                                             child: Text('Training Details',
-                                               style: TextStyle(
-                                                 fontSize: 22,
-                                                 fontFamily: mainFont,
-                                                 fontWeight: FontWeight.bold,
-                                                 color:Colors.white
-                                               ),
-                                             ),
-                                           ),
-                                         ),
-                                         SizedBox(
-                                           height: 20,
-                                         ),
-                                         SizedBox(
-                                           width: MediaQuery.of(context).size.width*0.22,
-                                           height: MediaQuery.of(context).size.height*0.05,
-                                           child: Row(
-                                             children: [
-                                               Text('Training Name:',
-                                                 style: TextStyle(
-                                                   fontSize: 14,
-                                                   fontFamily: mainFont,
-                                                   color: mainColor
-
-                                                 ),
-                                                 maxLines: 5,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-                                               SizedBox(
-                                                 width: 10,
-                                               ),
-                                               Text('${widget.trainingName}',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     fontWeight: FontWeight.bold
-                                                 ),
-                                                 maxLines: 5,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-
-                                             ],
-                                           ),
-                                         ),
-                                         Divider(),
-                                         SizedBox(
-                                           width: MediaQuery.of(context).size.width*0.22,
-                                           height: MediaQuery.of(context).size.height*0.05,
-                                           child: Row(
-                                             children: [
-                                               Text('Lessons:',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     color: mainColor
-
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-                                               SizedBox(
-                                                 width: 10,
-                                               ),
-                                               Text('15 Lessons',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     fontWeight: FontWeight.bold
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-
-                                             ],
-                                           ),
-                                         ),
-                                         Divider(),
-                                         SizedBox(
-                                           width: MediaQuery.of(context).size.width*0.22,
-                                           height: MediaQuery.of(context).size.height*0.05,
-                                           child: Row(
-                                             children: [
-                                               Text('Training Time:',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     color: mainColor
-
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-                                               SizedBox(
-                                                 width: 10,
-                                               ),
-                                               Text(' ${widget.startDate} to ${widget.endDate} ',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     fontWeight: FontWeight.bold
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-
-                                             ],
-                                           ),
-                                         ),
-                                         Divider(),
-                                         SizedBox(
-                                           width: MediaQuery.of(context).size.width*0.22,
-                                           height: MediaQuery.of(context).size.height*0.05,
-                                           child: Row(
-                                             children: [
-                                               Text('Training Cost:',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     color: mainColor
-
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-                                               SizedBox(
-                                                 width: 10,
-                                               ),
-                                               Text('${widget.cost}',
-                                                 style: TextStyle(
-                                                     fontSize: 14,
-                                                     fontFamily: mainFont,
-                                                     fontWeight: FontWeight.bold
-                                                 ),
-                                                 maxLines: 1,
-                                                 overflow: TextOverflow.ellipsis,
-
-                                               ),
-
-                                             ],
-                                           ),
-                                         ),
-                                         Divider(),
-                                         Text('No prior knowledge required',
-                                           style: TextStyle(
-                                               fontSize: 14,
-                                               fontFamily: mainFont,
-                                               fontWeight: FontWeight.bold
-                                           ),
-                                           maxLines: 5,
-                                           overflow: TextOverflow.ellipsis,
-
-                                         ),
-                                         Divider(),
-                                         Spacer(),
-                                         Row(
-                                           mainAxisAlignment: MainAxisAlignment.center,
-                                           children: [
-                                             Text(
-                                               '(122)',
-                                               style: TextStyle(
-                                                 fontSize: 16,
-                                                 fontFamily: 'Arial',
-                                                 fontWeight: FontWeight.bold,
-                                               ),
-                                             ),
-
-                                             SizedBox(width: 10),
-
-
-
-                                             Icon(
-                                               Icons.star,
-                                               color: mainColor,
-                                               size: 20,
-                                             ),
-                                             SizedBox(width: 5),
-                                             Icon(
-                                               Icons.star,
-                                               color:mainColor,
-                                               size: 20,
-                                             ),
-                                             SizedBox(width: 5),
-                                             Icon(
-                                               Icons.star,
-                                               color: mainColor,
-                                               size: 20,
-                                             ),
-                                             SizedBox(width: 5),
-                                             Icon(
-                                               Icons.star,
-                                               color: mainColor,
-                                               size: 20,
-                                             ),
-                                             SizedBox(width: 5),
-                                             Icon(
-                                               Icons.star_border,
-                                               color: mainColor,
-                                               size: 20,
-                                             ),
-
-
-                                           ],
-                                         ),
-                                         SizedBox(height: 10),
-                                         InkWell(
-                                           onTap: () {
-                                             showDialog(
-                                                 context:context ,
-                                                 builder: (context){
-                                                   return Payment(
-                                                       companyName: widget.companyName,
-                                                       city: widget.city,
-                                                       street: widget.street,
-                                                       trainingSpecialization: widget.specialization,
-                                                       trainingCost: widget.cost,
-                                                       trainingDescription: widget.description,
-                                                       startDate: widget.startDate,
-                                                       endDate: widget.endDate,
-                                                       trainingName: widget.trainingName,
-                                                       category: widget.category,
-                                                       id: widget.id,
-                                                       isLiked:widget.isLiked ,
-                                                       isPaid: widget.isPaid,
-                                                       image: widget.image
-                                                   );
-
-                                                 }
-                                             );
-                                           },
-                                           child: Container(
-                                             width: MediaQuery.of(context).size.width * 0.2,
-                                             height: MediaQuery.of(context).size.width * 0.03,
-                                             decoration: BoxDecoration(
-                                               borderRadius: BorderRadius.circular(10),
-                                               gradient: LinearGradient(
-                                                 begin: Alignment.centerLeft,
-                                                 end: Alignment.centerRight,
-                                                 colors: [
-                                                   HexColor('#1B3358'),
-                                                   mainColor
-                                                 ],
-                                               ),
-                                             ),
-                                             child: Center(
-                                               child: Text(
-                                                 'Apply For Training',
-                                                 style: TextStyle(
-                                                     color: Colors.white,
-                                                     fontFamily: 'Poppins',
-                                                     fontSize: 18),
-                                               ),
-                                             ),
-                                           ),
-                                         ),
-                                         SizedBox(height: 5),
-                                       ],
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
+                  footerPage(context),
+                ],
+              ),
+            ),
 
-                    footerPage(context),
-                  ],
-                ),
-              )),
-        );
+          ),
+        )
+            : Container();
       },
     );
   }
+
+  Widget buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        children: [
+          LocaleText(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontFamily: mainFont,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Spacer(),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: mainFont,
+                color: mainColor,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget applyButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        cachHelper.getData(key: 'uId') == null
+            ? Navigator.push(context, MaterialPageRoute(builder: (context) => Login()))
+            : cachHelper.getData(key: 'isPaid') == true
+            ? Navigator.push(context, MaterialPageRoute(builder: (context) => Certificate()))
+            : showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            backgroundColor: mainColor,
+            title: LocaleText(
+              "confirmation",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: LocaleText(
+              "agreement",
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: LocaleText("no", style: Theme.of(context).textTheme.labelLarge),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Payment(
+                        companyName: widget.companyName,
+                        city: widget.city,
+                        street: widget.street,
+                        trainingSpecialization: widget.specialization,
+                        trainingCost: widget.cost,
+                        trainingDescription: widget.description,
+                        startDate: widget.startDate,
+                        endDate: widget.endDate,
+                        trainingName: widget.trainingName,
+                        category: widget.category,
+                        id: widget.id,
+                        isLiked: widget.isLiked,
+                        isPaid: widget.isPaid,
+                        image: widget.image,
+                      );
+                    },
+                  );
+                },
+                child: LocaleText("yes", style: Theme.of(context).textTheme.labelLarge),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.width * 0.03,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [HexColor('#1B3358'), mainColor],
+          ),
+        ),
+        child: Center(
+          child: LocaleText(
+            cachHelper.getData(key: 'isPaid') == true ? 'get_certificate' : 'apply_for_training',
+            style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 18),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget ratingRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '(122)',
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Arial',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(width: 10),
+        Icon(Icons.star, color: mainColor, size: 20),
+        SizedBox(width: 5),
+        Icon(Icons.star, color: mainColor, size: 20),
+        SizedBox(width: 5),
+        Icon(Icons.star, color: mainColor, size: 20),
+        SizedBox(width: 5),
+        Icon(Icons.star, color: mainColor, size: 20),
+        SizedBox(width: 5),
+        Icon(Icons.star_border, color: mainColor, size: 20),
+      ],
+    );
+  }
+
+
+  Widget detailRow(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: LocaleText(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: mainFont,
+                color: mainColor,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            flex: 3,
+            child: Text(
+              content,
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: mainFont,
+                fontWeight: FontWeight.bold,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
 }
+

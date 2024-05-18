@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tadrebk/profile/company_model.dart';
 import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/profile/user_model.dart';
+import 'package:tadrebk/shared/cach_helper.dart';
 
 class ProfileCubit extends Cubit<ProfileStatus> {
   ProfileCubit() : super(ProfileInitialStates());
@@ -74,6 +75,20 @@ class ProfileCubit extends Cubit<ProfileStatus> {
     companyModel = null;
   }
 
+
+
+
+  bool isDark = cachHelper.getData(key: 'isDark') ?? false;
+
+  void changeStyle(){
+
+    isDark =! isDark;
+
+    cachHelper.saveData(key: 'isDark', value: isDark);
+
+    emit(ChangeStyleSuccessStates());
+
+  }
 
 
 

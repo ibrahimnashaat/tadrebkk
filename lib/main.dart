@@ -1,37 +1,38 @@
-
-
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
+import 'package:tadrebk/add_training/post.dart';
+import 'package:tadrebk/certificate/certificate.dart';
+import 'package:tadrebk/contact%20_us/contact_us_screen.dart';
+import 'package:tadrebk/favorite_page/favorite_page.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/my_trainings/paid_trainings.dart';
+import 'package:tadrebk/payment_page/payment.dart';
 import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/profile.dart';
+import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/constant.dart';
 import 'package:tadrebk/sign_up_screen/cubit.dart';
-import 'package:tadrebk/sign_up_screen/sign_up.dart';
-import 'package:tadrebk/training_categories/training_categories.dart';
-import 'package:tadrebk/training_details/training_details.dart';
-
+import 'about_us_screen/about_us_screen.dart';
 import 'add_training/cubit.dart';
-import 'add_training/post.dart';
-
-import 'favorite_page/favorite_page.dart';
-import 'forget_password/forget_password.dart';
-import 'get_trainings/get _trainings_page.dart';
-import 'get_trainings/get_all_trainings.dart';
 import 'login_screen/cubit.dart';
 import 'login_screen/login.dart';
 import 'my_trainings/my_trainings.dart';
+import 'shared/styles/dark_light.dart';
+
+
 
 Future<void> main() async {
 
   await cachHelper.init();
    FluttertoastWebPlugin();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Locales.init(['en','ar']);
+
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -112,27 +113,37 @@ setState(() {    // TODO: implement setState
      ),
 
      BlocProvider(
-       create: (context) => ProfileCubit(),
+       create: (context) => ProfileCubit()..isDark,
      ),
 
-   ], child: MaterialApp(
+   ], child: LocaleBuilder(builder:(local)=>BlocBuilder<ProfileCubit, ProfileStatus>(
+       builder: (context, state){
+         return MaterialApp(
 
-   debugShowCheckedModeBanner: false,
+           theme: ProfileCubit.get(context).isDark ?  Styles.lightTheme(context) : Styles.darkTheme(context),
 
-   // home: widget.startWidget,
-     home: TrainingCategories(
-       Programming: 0,
-       Contracting: 0,
-       Marketing: 0,
-       Accounting: 0,
-       communications: 0,
-     ),
+           localizationsDelegates: Locales.delegates,
+           supportedLocales: Locales.supportedLocales,
+           locale: local,
+           debugShowCheckedModeBanner: false,
 
 
-    ),);
+           // home: widget.startWidget,
+           home: HomePage(),
+
+
+         );
+       }
+   )
+   ),);
 
 
 
 
   }
 }
+
+
+
+
+

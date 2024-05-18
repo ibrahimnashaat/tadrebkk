@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/profile/profile.dart';
@@ -12,6 +14,7 @@ import 'package:tadrebk/sign_up_screen/sign_up.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
+import '../get_trainings/get_all_trainings.dart';
 import '../login_screen/login.dart';
 import '../profile/cubit.dart';
 import '../profile/states.dart';
@@ -29,6 +32,47 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
  bool isLoggedIn=false;
+ bool isClosed=true;
+
+
+ List<String> messages = [];
+ TextEditingController _controller = TextEditingController();
+
+ Future<void> _sendBotMessage() async {
+
+    messages.add('Bot: مرحباً كيف يمكنني مساعدتك؟');
+   messages.add('Bot:\n1. ما هي المجالات التدريبية المتاحة على منصة "تدريبك"؟\n'
+       '2. كيف يمكنني التسجيل في دورة تدريبية على "تدريبك"؟\n'
+       '3. هل هناك شهادات معتمدة متاحة عند اكمال الدورة التدريبية؟\n'
+       '4. هل هناك رسوم إضافية تتعلق بالتدريبات المهنية بعد الدفع الأساسي؟\n'
+       '5. التحدث الى احد ممثلي خدمة العملاء؟\n'
+   );
+ }
+
+ void _handleQuestionSelect(int questionNumber) {
+   String question = '$questionNumber';
+   String answer = getAnswerForQuestion(question);
+   messages.add('You: $question');
+   messages.add('Bot: $answer');
+ }
+
+ String getAnswerForQuestion(String question) {
+
+   switch (question) {
+     case '1':
+       return 'يمكنك العثور على مجموعة متنوعة من المجالات التدريبية على منصة "تدريبك". تشمل هذه المجالات التكنولوجيا، والتسويق، والإدارة، واللغات، والمهارات الشخصية، وغيرها الكثير.';
+     case '2':
+       return 'يمكنك التسجيل في الدورات التدريبية على منصة "تدريبك" باتباع خطوات بسيطة. أولاً، ابحث عن الدورة التدريبية المناسبة لك من بين الدورات المتاحة. ثم، اتبع الخطوات المحددة لإتمام عملية التسجيل، سواء كانت الدورة مجانية أو مدفوعة.';
+     case '3':
+       return 'نعم، بعد اكتمال الدورة التدريبية بنجاح، ستحصل على شهادة معتمدة تُثبت اجتيازك للدورة واكتسابك للمهارات المطلوبة. هذه الشهادة يمكنك استخدامها لإثبات مؤهلاتك في المجال الذي قمت بتدريبه.';
+     case '4':
+       return 'في العادة، يتم تحديد جميع الرسوم المتعلقة بالتدريبات المهنية ودفعها مقدمًا، ولا تتوجد رسوم إضافية عادةً. ومع ذلك، يجب عليك التحقق من سياسة المنصة وشروط الدورة التدريبية المحددة للتأكد من عدم وجود رسوم إضافية غير متوقعة.';
+     case '5':
+       return 'يتم تحويلك الان الرجاء الانتظار.......';
+     default:
+       return 'Sorry, I don\'t understand that question.';
+   }
+ }
 
 
 @override
@@ -37,6 +81,7 @@ void initState() {
   isLoggedIn = cachHelper.getData(key: 'type')!=null;
   ProfileCubit.get(context).getUserData();
   ProfileCubit.get(context).getCompanyData();
+  _sendBotMessage();
 
     // TODO: implement initState
     super.initState();
@@ -49,14 +94,17 @@ void initState() {
       listener: (context,state){},
       builder: (context,state){
 
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
 
-        return Scaffold(
+        return windowWidth >=1100 && windowHeight >=600 ?  Scaffold(
           body: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
 
                     HeaderWidget(
@@ -78,7 +126,7 @@ void initState() {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 40, left: 80),
+                                    padding: const EdgeInsets.only(top: 40, left: 80,right: 80),
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.24,
                                       height:
@@ -87,8 +135,8 @@ void initState() {
                                         children: [
                                           Expanded(
                                             flex: 2,
-                                            child: Text(
-                                              'Develop Your Skills in a new and unique way',
+                                            child: LocaleText(
+                                              'develop',
                                               style: TextStyle(
                                                 fontSize: 34,
                                                 color: Colors.white,
@@ -102,8 +150,8 @@ void initState() {
                                             height: 20,
                                           ),
                                           Expanded(
-                                            child: Text(
-                                              'Our website is an ideal destination for individuals who want to enhance their skills through practical exercises. We offer a wide range of training programs in various fields. Our website is user-friendly and provides a simple interface that allows you to access the content easily and flexibly.',
+                                            child: LocaleText(
+                                              'description',
                                               style: TextStyle(
                                                   color: Colors.white, fontSize: 10),
                                             ),
@@ -160,8 +208,8 @@ void initState() {
                                                   Padding(
                                                     padding: const EdgeInsets.only(
                                                         bottom: 6),
-                                                    child: Text(
-                                                      'Training',
+                                                    child: LocaleText(
+                                                      'training',
                                                       style: TextStyle(
                                                           fontFamily: 'Poppins',
                                                           fontWeight: FontWeight.w600,
@@ -207,8 +255,8 @@ void initState() {
                                                   Padding(
                                                     padding: const EdgeInsets.only(
                                                         bottom: 6),
-                                                    child: Text(
-                                                      'Certificate',
+                                                    child: LocaleText(
+                                                      'certificate',
                                                       style: TextStyle(
                                                           fontFamily: 'Poppins',
                                                           fontWeight: FontWeight.w600,
@@ -254,8 +302,8 @@ void initState() {
                                                   Padding(
                                                     padding: const EdgeInsets.only(
                                                         bottom: 6),
-                                                    child: Text(
-                                                      'Add Training',
+                                                    child: LocaleText(
+                                                      'add_training',
                                                       style: TextStyle(
                                                           fontFamily: 'Poppins',
                                                           fontWeight: FontWeight.w600,
@@ -340,19 +388,24 @@ void initState() {
                       height: 100,
                     ),
 
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.12,
-                      height: MediaQuery.of(context).size.width*0.03,
-                      color: mainColor,
-                      child: Center(child: Text('OUR SERVICES',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.12,
+                          height: MediaQuery.of(context).size.width*0.03,
+                          color: mainColor,
+                          child: Center(child: LocaleText('our_services',
 
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: mainFont,
-                            color: Colors.white
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: mainFont,
+                                color: Colors.white
+                            ),
+                          ),),
                         ),
-                      ),),
+                      ],
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
@@ -366,28 +419,28 @@ void initState() {
                             introComponents(
                                 context,
                                 'assets/images/img_18.png',
-                                'Training',
-                                '"Explore the realm of knowledge and gain new skills through our innovative platform for course delivery. Embark on an exciting learning journey and acquire life-changing'
+                                'training',
+                                'description_zero'
 
                             ),
                             introComponents(
                                 context,
                                 'assets/images/img_19.png',
-                                'Certificate',
-                                '"We provide certified credentials upon successfully completing courses, enhancing job opportunities and personal professional development'
+                                'certificate',
+                                'description_one'
 
                             ),
                             introComponents(
                                 context,
                                 'assets/images/img_20.png',
-                                'Find your training',
-                                '"The search feature enables users to easily find relevant courses based on their interests and needs'
+                                'find_your_training',
+                                'description_two'
                             ),
                             introComponents(
                                 context,
                                 'assets/images/img_21.png',
-                                'Add Training',
-                                '"The platform enables companies to provide customized training and effectively track participant progress'
+                                'add_training',
+                                'description_three'
                             ),
                             SizedBox(width: 4,),
 
@@ -414,7 +467,7 @@ void initState() {
                             SizedBox(
                               height: 40,
                             ),
-                            Text('OUR TRAININGS',
+                            LocaleText('our_trainings',
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
@@ -494,13 +547,18 @@ void initState() {
                               width: MediaQuery.of(context).size.width*0.12,
                               height: MediaQuery.of(context).size.width*0.03,
                               color: mainColor,
-                              child: Center(child: Text('View Courses',
+                              child: Center(child: GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>GetAllTrainings()));
+                                },
+                                child: LocaleText('view_courses',
 
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: mainFont,
-                                    color: Colors.white
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: mainFont,
+                                      color: Colors.white
+                                  ),
                                 ),
                               ),),
                             ),
@@ -531,7 +589,7 @@ void initState() {
                           SizedBox(
                             height: 40,
                           ),
-                          Text('Customer reviews',
+                          LocaleText('customer_reviews',
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
@@ -552,18 +610,18 @@ void initState() {
                               children: [
                                 reviewWidget(context,
                                     'Emad abdu',
-                                    'Cairo,Egypt',
-                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                    'address',
+                                    'comment'
                                 ),
                                 reviewWidget(context,
                                     'Emad abdu',
-                                    'Cairo,Egypt',
-                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                    'address',
+                                    'comment'
                                 ),
                                 reviewWidget(context,
                                     'Emad abdu',
-                                    'Cairo,Egypt',
-                                    'I found that this website, which provides practical training, was beneficial and rewarding in enhancing my skills'
+                                    'address',
+                                    'comment'
                                 ),
 
                               ],
@@ -577,97 +635,305 @@ void initState() {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height*0.8,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 100,right: 100),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text('+30K ',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
-
-
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: [
+                             Text('+30K ',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                               Text('Training ',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
 
 
+                             ),
+                             LocaleText('training',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                             ],
-                            ),
+
+
+                             ),
+                           ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 100,right: 100),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text('+50K ',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
-
-
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: [
+                             Text('+50K ',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                               Text('views',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
 
 
+                             ),
+                             LocaleText('views',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                             ],
-                            ),
+
+
+                             ),
+                           ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 100,right: 100),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text('+50K',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
-
-
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: [
+                             Text('+50K',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                               Text('Happy customers',
-                                 style: TextStyle(
-                                     fontSize: 35,
-                                     color: mainColor,
-                                     fontFamily: mainFont,
-                                 ),
 
 
+                             ),
+                             LocaleText('happy_customers',
+                               style: TextStyle(
+                                   fontSize: 35,
+                                   color: mainColor,
+                                   fontFamily: mainFont,
                                ),
-                             ],
-                            ),
+
+
+                             ),
+                           ],
                           ),
                         ],
                       ),
                     ),
+
+
+                   isClosed
+                       ?SizedBox(
+                     width: MediaQuery.of(context).size.width,
+                     height: MediaQuery.of(context).size.height*0.2,
+                     child: Row(
+
+                       mainAxisAlignment: MainAxisAlignment.end,
+
+                       children: [
+                         Padding(
+                           padding: const EdgeInsets.only(right: 20),
+                           child: Stack(
+
+                             alignment: AlignmentDirectional.center,
+
+                             children: [
+
+
+                               SpinKitRipple(size:120,
+                                   color: mainColor),
+                               InkWell(
+                                 onTap: (){
+                                   setState(() {
+                                     isClosed = false;
+                                   });
+                                 },
+                                 child: CircleAvatar(
+
+                                   radius: 30,
+
+                                   backgroundColor: Colors.white,
+                                   child: Image.asset('assets/images/img_36.png',
+
+                                   ),
+                                 ),
+                               ),
+
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                   )
+                       :Padding(
+                      padding: const EdgeInsets.only(right: 40,bottom: 20),
+                      child: SizedBox(
+
+                          width: MediaQuery.of(context).size.width*0.25,
+                          height: MediaQuery.of(context).size.height*0.7,
+
+
+                        child: Card(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          color: Colors.white,
+                         child: Column(
+                           children: [
+                             Container(
+                               width: double.infinity,
+                               height: MediaQuery.of(context).size.height*0.08,
+                               color: mainColor,
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                 children: [
+                                               Padding(
+                                                 padding: const EdgeInsets.all(5.0),
+                                                 child: CircleAvatar(
+
+                                                   radius: 30,
+
+                                                   backgroundColor: Colors.white,
+                                                   child: Image.asset('assets/images/img_36.png',
+
+                                                   ),
+                                                 ),
+                                               ),
+                                   Expanded(
+                                     child: LocaleText('smart_assistant',
+
+                                       style: TextStyle(
+                                         fontFamily: mainFont,
+                                         color: Colors.white
+                                       ),
+
+                                     ),
+                                   ),
+
+                                   Padding(
+                                     padding: const EdgeInsets.only(right: 5),
+                                     child: Row(
+
+                                       children: [
+                                         Padding(
+                                           padding: const EdgeInsets.only(bottom: 10),
+                                           child: InkWell(
+                                               onTap: (){
+                                                 setState(() {
+                                                   isClosed = true;
+                                                 });
+                                               },
+                                               child: Icon(Icons.minimize,color: Colors.white,size: 20,)),
+                                         ),
+                                         SizedBox(
+                                           width: 10,
+                                         ),
+                                         InkWell(
+                                             onTap: (){
+                                               setState(() {
+                                                 isClosed = true;
+                                               });
+                                             },
+                                             child: Icon(Icons.close,color: Colors.white,size: 20,)),
+                                       ],
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ),
+                             Expanded(
+                               child: ListView.builder(
+                                 itemCount: messages.length,
+                                 scrollDirection: Axis.vertical,
+
+
+                                 itemBuilder: (context, index) {
+                                   return Align(
+                                     alignment: messages[index].startsWith('Bot') ? Alignment.centerLeft : Alignment.centerRight,
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Padding(
+                                         padding: messages[index].startsWith('Bot') ? EdgeInsets.only(right: 40 ,) :  EdgeInsets.all(0),
+                                         child: Container(
+                                           decoration: BoxDecoration(
+                                             borderRadius: messages[index].startsWith('Bot')
+                                                 ? BorderRadius.only(
+                                               topLeft: Radius.circular(20),
+                                               topRight: Radius.circular(20),
+                                               bottomRight:Radius.circular(20),
+
+                                             )
+                                                 :BorderRadius.only(
+                                               topLeft: Radius.circular(20),
+                                               topRight: Radius.circular(20),
+                                               bottomLeft:Radius.circular(20),
+
+                                             ),
+                                             color: messages[index].startsWith('Bot') ? Colors.blueGrey[200] : Colors.lightGreen,
+                                           ),
+                                           padding: EdgeInsets.all(8) ,
+                                           child: Text(messages[index]),
+                                         ),
+                                       ),
+                                     ),
+                                   );
+                                 },
+                               ),
+                             ),
+                          Divider(),
+                          IconTheme(
+                            data: IconThemeData(color: Colors.blue),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _controller,
+                                      onSubmitted: (value){
+                                        _controller.text = value;
+                                      },
+                                      decoration: InputDecoration.collapsed(
+                                        hintText: 'Type a Question Number',
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.send),
+                                    onPressed: () {
+                                      int? selectedQuestion = int.tryParse(_controller.text);
+                                      if (selectedQuestion != null && selectedQuestion >= 1 && selectedQuestion <= 5) {
+                                        setState(() {
+                                          _handleQuestionSelect(selectedQuestion);
+                                          _controller.clear();
+                                        });
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: LocaleText('question_number'),
+                                              content: LocaleText('enter_number'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context),
+                                                  child: LocaleText('ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                           ],
+                         ),
+                        ),
+                      ),
+                    )
+                    ,
+
+
                     footerPage(context),
                   ],
                 ),
               )),
-        );
+        ) : Container();
       },
     );
   }
@@ -720,7 +986,7 @@ text2
             SizedBox(
               height: 8,
             ),
-            Text(text1,
+            LocaleText(text1,
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -733,7 +999,7 @@ text2
               height: 16,
             ),
             Expanded(
-              child: Text(text2,
+              child: LocaleText(text2,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -804,7 +1070,7 @@ Widget reviewWidget(
                             ),
                           ),
                           Expanded(
-                            child: Text(address,
+                            child: LocaleText(address,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontFamily: mainFont,
@@ -875,7 +1141,7 @@ Widget reviewWidget(
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 10,bottom: 20),
-              child: Text(
+              child: LocaleText(
                 description,
                 style: TextStyle(
                     fontSize: 12,

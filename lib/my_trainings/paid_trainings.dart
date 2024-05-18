@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/states.dart';
@@ -37,8 +38,11 @@ class _PaidTrainingsState extends State<PaidTrainings> {
         var street = model?.street;
         var isPerson = model?.isPerson;
 
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
 
-        return  Scaffold(
+
+        return windowWidth >=1100 && windowHeight >=600 ?  Scaffold(
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -55,8 +59,8 @@ class _PaidTrainingsState extends State<PaidTrainings> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'My Trainings',
+                        LocaleText(
+                          'my_training',
                           style: TextStyle(
                               fontSize: 26,
                               color: Colors.white,
@@ -137,7 +141,7 @@ class _PaidTrainingsState extends State<PaidTrainings> {
               ],
             ),
           ),
-        );
+        ) : Container();
       },
     );
   }

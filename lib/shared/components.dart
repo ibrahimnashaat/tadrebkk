@@ -4,220 +4,13 @@
 
 
 
-// import 'package:flutter/material.dart';
-// import 'package:hexcolor/hexcolor.dart';
-// import 'package:tadrebk/shared/colors.dart';
-// import 'package:tadrebk/shared/fonts.dart';
-//
-// Widget trainingID({
-//   required String city,
-//   required String image,
-//   required String street,
-//   required String companyName,
-//   required BuildContext context,
-//   required String trainingSpecialization,
-//   required String trainingCost,
-//   required String trainingDescription,
-//   required String startDate,
-//   required String endDate,
-// }) =>
-//     Card(
-//       color: Colors.white,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(10.0),
-//             child: SizedBox(
-//               height: MediaQuery.of(context).size.width * 0.12,
-//               width: MediaQuery.of(context).size.width * 0.3,
-//               child: Card(
-//                 clipBehavior: Clip.antiAliasWithSaveLayer,
-//                 child: image == ''
-//                     ? Image.asset('assets/images/img.png',fit: BoxFit.cover,)
-//                     : Image.network('$image',fit: BoxFit.cover,),
-//               ),
-//             ),
-//           ),
-//           Row(
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.only(left: 20,right: 20,top: 10,),
-//                 child: Expanded(
-//                   child: Text(companyName,
-//                     style: TextStyle(
-//                         fontSize: 22,
-//                         fontWeight: FontWeight.bold,
-//                         fontFamily: mainFont
-//                     ),
-//                     maxLines: 1,
-//                     textAlign: TextAlign.center,
-//
-//                   ),
-//                 ),
-//               ),
-//               Spacer(),
-//               Padding(
-//                 padding: const EdgeInsets.only(right: 20,top: 10,),
-//                 child: Container(
-//                   height: MediaQuery.of(context).size.width * 0.02,
-//                   width: MediaQuery.of(context).size.width * 0.07,
-//                   color: HexColor('#B5C9E7'),
-//                   child: Expanded(
-//                     child: Center(
-//                       child: Text(trainingSpecialization,
-//                         style: TextStyle(
-//                             fontSize: 14,
-//                             fontWeight: FontWeight.w600,
-//                             fontFamily: mainFont,
-//                             color: mainColor
-//                         ),
-//                         maxLines: 1,
-//                         textAlign: TextAlign.center,
-//                         overflow: TextOverflow.ellipsis,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.only(left: 20,right: 20, top: 10),
-//             child: Expanded(
-//               child: Text(trainingDescription,
-//                 style: TextStyle(
-//                     fontSize: 12,
-//                     fontFamily: mainFont,
-//                     fontWeight: FontWeight.w600
-//                 ),
-//
-//                 maxLines: 2,
-//                 textAlign: TextAlign.start,
-//                 overflow: TextOverflow.ellipsis,
-//
-//
-//               ),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.only(left: 40,right: 40,top: 10,),
-//             child: Row(
-//               children: [
-//                 Icon(Icons.access_time_outlined,color: Colors.grey.withOpacity(0.5),size: 16,),
-//                 Text(' 2h 40min',
-//                   style: TextStyle(
-//                     fontSize: 14,
-//
-//                     fontFamily: mainFont,
-//
-//                   ),
-//                 ),
-//
-//                 Spacer(),
-//
-//                 Icon(Icons.local_library_outlined,color: Colors.grey.withOpacity(0.5),size: 16,),
-//                 Text(' 15 Lectures',
-//                   style: TextStyle(
-//                     fontSize: 14,
-//
-//                     fontFamily: mainFont,
-//
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           Spacer(),
-//
-//           Padding(
-//             padding: const EdgeInsets.only(left: 20 , right: 20,top: 10,bottom: 8),
-//             child: Container(
-//               height: MediaQuery.of(context).size.width * 0.025,
-//               width: MediaQuery.of(context).size.width ,
-//              decoration: BoxDecoration(
-//                color: HexColor('#B5C9E7'),
-//                borderRadius: BorderRadius.circular(5)
-//              ),
-//               child: Expanded(
-//                 child: Center(
-//                   child: Row(
-//                     children: [
-//                       Padding(
-//                         padding: const EdgeInsets.only(left: 10),
-//                         child: Text(
-//                           trainingCost,
-//                           style: TextStyle(
-//                             fontSize: 14,
-//                             fontFamily: mainFont,
-//                             fontWeight: FontWeight.bold,
-//                             color: mainColor
-//                           ),
-//                         ),
-//                       ),
-//                       Spacer(),
-//                       Padding(
-//                         padding: const EdgeInsets.only(right: 10),
-//                         child: Row(
-//                           children: [
-//                             Text(
-//                               '4.9 ',
-//                               style: TextStyle(
-//                                 fontSize: 14,
-//                                 fontFamily: mainFont,
-//                                 fontWeight: FontWeight.bold,
-//                                 color: mainColor
-//                               ),
-//                             ),
-//                             Icon(
-//                               Icons.star,
-//                               color: mainColor,
-//                               size: 16,
-//                             ),
-//                             Icon(
-//                               Icons.star,
-//                               color: mainColor,
-//                               size: 16,
-//                             ),
-//                             Icon(
-//                               Icons.star,
-//                               color: mainColor,
-//                               size: 16,
-//                             ),
-//                             Icon(
-//                               Icons.star,
-//                               color: mainColor,
-//                               size: 16,
-//                             ),
-//                             Icon(
-//                               Icons.star_border,
-//                               color: mainColor,
-//                               size: 16,
-//                             ),
-//
-//
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   )
-//
-//                 ),
-//               ),
-//             ),
-//           ),
-//
-//         ],
-//       ),
-//     );
-
-
 
 
 
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -254,32 +47,28 @@ Widget trainingID({
           Stack(
             alignment: AlignmentDirectional.topStart,
             children: [
-              SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  child: image == ''
-                      ? Stack(
-                    children: [
-                      Container(
-                          height: MediaQuery.of(context).size.width * 0.2,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Image.asset('assets/images/img_20.png',fit: BoxFit.cover,)),
-                      Container(
-                        color:  Colors.black.withOpacity(0.3),
-                      ),
-                    ],
-                  )
-                      : Stack(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width * 0.2,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: Image.network('$image',fit: BoxFit.cover,),),
-                      Container(
-                        color:  Colors.black.withOpacity(0.3),
-                      ),
-                    ],
-                  )
+              image == ''
+                  ? Stack(
+                children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.28,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Image.asset('assets/images/img_20.png',fit: BoxFit.cover,)),
+                  Container(
+                    color:  Colors.black.withOpacity(0.3),
+                  ),
+                ],
+              )
+                  : Stack(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.28,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Image.network('$image',fit: BoxFit.cover,),),
+                  Container(
+                    color:  Colors.black.withOpacity(0.3),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only (top: 10,left: 10,right: 10),
@@ -365,17 +154,15 @@ Widget trainingID({
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20,right: 20,),
-                    child: Expanded(
-                      child: Text(trainingName,
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: mainFont
-                        ),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-
+                    child: Text(trainingName,
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: mainFont
                       ),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+
                     ),
                   ),
                 ],
@@ -423,8 +210,8 @@ Widget trainingID({
                       ),
                     ),
                     child: Center(
-                      child: Text(
-                        'View',
+                      child: LocaleText(
+                        'view',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -442,21 +229,19 @@ Widget trainingID({
 
           Padding(
             padding: const EdgeInsets.only(left: 20,right: 20,top: 10),
-            child: Expanded(
-              child: Text(trainingDescription,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: mainFont,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.withOpacity(0.5)
-                ),
-
-                maxLines: 1,
-                textAlign: TextAlign.start,
-                overflow: TextOverflow.ellipsis,
-
-
+            child: Text(trainingDescription,
+              style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: mainFont,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.withOpacity(0.5)
               ),
+
+              maxLines: 1,
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.ellipsis,
+
+
             ),
           ),
           // Padding(
@@ -493,50 +278,52 @@ Widget trainingID({
 
           Padding(
             padding: const EdgeInsets.only(left: 20 , right: 20,top: 10,bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  trainingCost,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: mainFont,
-                    fontWeight: FontWeight.bold,
-
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  trainingCost,
-                  style: TextStyle(
-                      fontSize: 12,
+            child: Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '${ int.tryParse(trainingCost)??0*2} L.E',
+                    style: TextStyle(
+                      fontSize: 18,
                       fontFamily: mainFont,
+                      fontWeight: FontWeight.bold,
 
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: Colors.grey
-
+                    ),
                   ),
-                ),
-                Spacer(),
-
-                Icon(Icons.local_library_outlined,color: Colors.grey.withOpacity(0.5),size: 16,),
-                Text(' 15 Lectures',
-                  style: TextStyle(
-                      fontSize: 14,
-
-                      fontFamily: mainFont,
-                      color: Colors.grey
-
+                  SizedBox(
+                    width: 4,
                   ),
-                ),
+                  Text(
+                    '${ (int.tryParse(trainingCost)??0*2)*2} L.E',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: mainFont,
+
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: Colors.grey
+
+                    ),
+                  ),
+                  Spacer(),
+
+                  Icon(Icons.local_library_outlined,color: Colors.grey.withOpacity(0.5),size: 16,),
+                  Text(' 15 Lectures',
+                    style: TextStyle(
+                        fontSize: 14,
+
+                        fontFamily: mainFont,
+                        color: Colors.grey
+
+                    ),
+                  ),
 
 
 
 
-              ],
+                ],
+              ),
             ),
           ),
 
@@ -602,13 +389,13 @@ Widget footerPage(context){
             Container(
               width: MediaQuery.of(context).size.width*0.25,
               height: MediaQuery.of(context).size.height*0.35,
-              padding: EdgeInsets.only(left: 80),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
 
-                  Text('Contact Us',
+                  LocaleText('contact_us',
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -621,12 +408,7 @@ Widget footerPage(context){
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.white,
-                        child: Icon(Icons.email_outlined,color: mainColor,size: 20,),
-                      ),
+                      Icon(Icons.email_outlined,color: mainColor,size: 20,),
                       SizedBox(
                         width: 10,
                       ),
@@ -643,6 +425,7 @@ Widget footerPage(context){
                               fontFamily: mainFont,
                               color:Colors.white
                           ),
+
                         ),
                       ),
                     ],
@@ -662,7 +445,7 @@ Widget footerPage(context){
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('About',
+                    LocaleText('about_us',
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -671,17 +454,7 @@ Widget footerPage(context){
                       ),
 
                     ),
-                    Text('Features',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: mainFont,
-                          color:Colors.white
-
-
-                      ),
-
-                    ),
-                    Text('Pricing',
+                    LocaleText('features',
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -691,7 +464,7 @@ Widget footerPage(context){
                       ),
 
                     ),
-                    Text('Gallery',
+                    LocaleText('pricing',
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -701,7 +474,17 @@ Widget footerPage(context){
                       ),
 
                     ),
-                    Text('Team',
+                    LocaleText('gallery',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: mainFont,
+                          color:Colors.white
+
+
+                      ),
+
+                    ),
+                    LocaleText('team',
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -727,7 +510,7 @@ Widget footerPage(context){
 
                 children: [
 
-                  Text('Subscribe',
+                  LocaleText('subscribe',
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -785,7 +568,7 @@ Widget footerPage(context){
                       height: MediaQuery.of(context).size.height*0.04,
                       color: HexColor('#B5C9E7'),
                       child: Center(
-                        child: Text('Subscribe',
+                        child: LocaleText('subscribe',
                           style: TextStyle(
                               color: mainColor,
                               fontFamily: 'Poppins',
@@ -801,7 +584,7 @@ Widget footerPage(context){
                   SizedBox(
                     height: 20,
                   ),
-                  Text('Follow Us',
+                  LocaleText('follow_us',
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: mainFont,
@@ -862,63 +645,59 @@ Widget footerPage(context){
         ),
         Padding(
           padding: const EdgeInsets.only(left: 100,right: 100),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height*0.05,
-            child: Row(
-              children: [
-                Text('© 2021 All Rights Reserved',
+          child: Row(
+            children: [
+              LocaleText('rights',
+              style: TextStyle(
+                color: Colors.white,
+
+              ),
+              ),
+              Spacer(),
+              LocaleText('privacy_policy',
+              style: TextStyle(
+                color: Colors.white,
+
+              ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              LocaleText('terms_of_use',
                 style: TextStyle(
                   color: Colors.white,
 
                 ),
-                ),
-                Spacer(),
-                Text('Privacy Policy',
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              LocaleText('sales_and_refunds',
                 style: TextStyle(
                   color: Colors.white,
 
                 ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text('Terms of Use',
-                  style: TextStyle(
-                    color: Colors.white,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              LocaleText('legal',
+                style: TextStyle(
+                  color: Colors.white,
 
-                  ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text('Sales and Refunds',
-                  style: TextStyle(
-                    color: Colors.white,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              LocaleText('site_map',
+                style: TextStyle(
+                  color: Colors.white,
 
-                  ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text('Legal',
-                  style: TextStyle(
-                    color: Colors.white,
+              ),
 
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text('Site Map',
-                  style: TextStyle(
-                    color: Colors.white,
-
-                  ),
-                ),
-
-              ],
-            ),
+            ],
           ),
         ),
       ],

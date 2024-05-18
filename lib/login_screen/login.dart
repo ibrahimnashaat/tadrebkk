@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/login_screen/cubit.dart';
@@ -67,12 +68,12 @@ class _LoginState extends State<Login> {
                   if(userModel!.isPerson == 'true'){
 
                     Navigator.pushAndRemoveUntil(context,
-                        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                        MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
                     cachHelper.saveData(key: 'type', value: 'person');
                   }else{
 
                     Navigator.pushAndRemoveUntil(context,
-                        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                        MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
                     cachHelper.saveData(key: 'type', value: 'company');
                   }
 
@@ -98,7 +99,11 @@ class _LoginState extends State<Login> {
 
       },
       builder: (context,state){
-        return Form(
+
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
+
+        return  windowWidth >=1100 && windowHeight >= 600 ? Form(
           key: _formKey,
           child: Scaffold(
             backgroundColor: Colors.black,
@@ -134,90 +139,89 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.height * 0.76,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              height: MediaQuery.of(context).size.height * 0.12,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.15,
-                                    height: MediaQuery.of(context).size.height * 0.14,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 30),
-                                          child: Text(
-                                            'Login',
-                                            style: TextStyle(
-                                                fontSize: 26,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: mainFont),
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height: MediaQuery.of(context).size.height * 0.12,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.15,
+                                      height: MediaQuery.of(context).size.height * 0.14,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 30),
+                                            child: LocaleText(
+                                              'login',
+                                              style: TextStyle(
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: mainFont),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.15,
-                                    height: MediaQuery.of(context).size.height * 0.14,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10, top: 10),
-                                          child: IconButton(
-                                            onPressed: () {
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.15,
+                                      height: MediaQuery.of(context).size.height * 0.14,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10, top: 10),
+                                            child: IconButton(
+                                              onPressed: () {
 
 
 
                                                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
 
 
-                                            },
-                                            icon: Icon(Icons.close),
+                                              },
+                                              icon: Icon(Icons.close),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 30,
-                                  right: 30,
-                                  top: 40
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Enter your Email Address*',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: mainFont,
-                                        color: Colors.grey
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30,
+                                    right: 30,
+                                    top: 40
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    LocaleText('enter_address',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: mainFont,
+                                          color: Colors.grey
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    TextFormField(
                                       keyboardType: TextInputType.emailAddress,
                                       controller: emailController,
                                       validator: (value) {
@@ -259,32 +263,29 @@ class _LoginState extends State<Login> {
                                         prefixIcon: Icon(Icons.email,color: Colors.grey,size: 16,),
                                       ),
                                     ),
-                                  ),
 
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 30,
-                                  right: 30,
-                                  top: 20
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Enter your Password*',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: mainFont,
-                                        color: Colors.grey
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30,
+                                    right: 30,
+                                    top: 20
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    LocaleText('enter_password',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: mainFont,
+                                          color: Colors.grey
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    TextFormField(
                                       keyboardType: TextInputType.visiblePassword,
                                       controller: passwordController,
                                       obscureText: LoginCubit.get(context).isNotVisible,
@@ -332,98 +333,96 @@ class _LoginState extends State<Login> {
                                             child: Icon(LoginCubit.get(context).suffix,color: Colors.grey,size: 16,)),
                                       ),
                                     ),
-                                  ),
 
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 30,
-                                  right: 30,
-                                  top: 30
-                              ),
-                              child: InkWell(
-                                onTap: (){
-                                  if (_formKey.currentState!.validate()) {
-                                    LoginCubit.get(context).userLogin(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        context: context
-                                    );
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30,
+                                    right: 30,
+                                    top: 30
+                                ),
+                                child: InkWell(
+                                  onTap: (){
+                                    if (_formKey.currentState!.validate()) {
+                                      LoginCubit.get(context).userLogin(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                          context: context
+                                      );
 
-                                  }
-
+                                    }
 
 
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.3,
-                                  height: MediaQuery.of(context).size.width*0.03,
 
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [HexColor('#1B3358'), mainColor],
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width*0.3,
+                                    height: MediaQuery.of(context).size.width*0.03,
+
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [HexColor('#1B3358'), mainColor],
+                                      ),
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Text('Login',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Poppins',
-                                          fontSize: 18
+                                    child: Center(
+                                      child: LocaleText('login',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Poppins',
+                                            fontSize: 18
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
+                              Padding(
+                                padding: const EdgeInsets.only(
                                   left: 30,
                                   right: 30,
                                   top: 6,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
 
-                                  Checkbox(
+                                    Checkbox(
                                       value: isChecked,
                                       onChanged: (value){
 
-                                    setState(() {
-                                      isChecked = !isChecked;
-                                    });
+                                        setState(() {
+                                          isChecked = !isChecked;
+                                        });
 
-                                  },
+                                      },
 
 
-                                  ),
-                                  Expanded(
-                                    child: Text('Remember me',
-                                      style: TextStyle(
+                                    ),
+                                    Expanded(
+                                      child: LocaleText('remember_me',
+                                        style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
 
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: (){
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context){
-                                                return ForgetPassword();
-                                              })
-                                          );
-                                        },
-                                        child: Text('Forget Your Password',
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context){
+                                              return ForgetPassword();
+                                            })
+                                        );
+                                      },
+                                      child: LocaleText('forget_your_password',
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -432,101 +431,103 @@ class _LoginState extends State<Login> {
                                           decorationColor: mainColor,
 
                                         ),
-                                                                          ),
                                       ),
                                     ),
 
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Padding(
+                              Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 30,
-                                    right: 30,
-                                    top:40,
+                                  left: 30,
+                                  right: 30,
+                                  top:40,
                                 ),
                                 child: Row(
                                   children: [
 
 
-                                    Text('Don\'t have an account?  ',
+                                    LocaleText('have_account',
                                       style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: mainFont,
-
-                                      ),
-                                    ),
-
-                                      InkWell(
-                                        onTap: (){
-
-                                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SignUp()), (route) => false);
-                                        },
-                                        child: Text('Sign Up',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontFamily: mainFont,
-                                            fontWeight: FontWeight.w600,
-                                            color: mainColor,
-
-
-                                        ),
-                                                                          ),
-                                      ),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30,
-                                    right: 30,
-                                    top:15,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('This page is protected by Google reCAPTCHA',
-                                      style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         fontFamily: mainFont,
 
                                       ),
                                     ),
 
-                                    Row(
-                                      children: [
+                                    InkWell(
+                                      onTap: (){
+
+                                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SignUp()), (route) => false);
+                                      },
+                                      child: LocaleText('sign_up',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: mainFont,
+                                          fontWeight: FontWeight.w600,
+                                          color: mainColor,
 
 
-                                        Text('to ensure you\'re not a bot.',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: mainFont,
-
-                                          ),
                                         ),
-
-                                          Text('learn more',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: mainFont,
-                                              fontWeight: FontWeight.w600,
-
-
-
-                                          ),
-                                                                            ),
-
-                                      ],
+                                      ),
                                     ),
+
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                              // Expanded(
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.only(
+                              //       left: 30,
+                              //       right: 30,
+                              //       top:15,
+                              //     ),
+                              //     child: Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Flexible(
+                              //           child: LocaleText('protected_page',
+                              //             style: TextStyle(
+                              //               fontSize: 10,
+                              //               fontFamily: mainFont,
+                              //
+                              //             ),
+                              //           ),
+                              //         ),
+                              //
+                              //         Flexible(
+                              //           child: Row(
+                              //             children: [
+                              //
+                              //
+                              //               LocaleText('ensure_bot',
+                              //                 style: TextStyle(
+                              //                   fontSize: 10,
+                              //                   fontFamily: mainFont,
+                              //
+                              //                 ),
+                              //               ),
+                              //
+                              //               LocaleText('learn_more',
+                              //                 style: TextStyle(
+                              //                   fontSize: 10,
+                              //                   fontFamily: mainFont,
+                              //                   fontWeight: FontWeight.w600,
+                              //
+                              //
+                              //
+                              //                 ),
+                              //               ),
+                              //
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -535,7 +536,7 @@ class _LoginState extends State<Login> {
               ],
             ),
           ),
-        );
+        ) : Container() ;
       },
     );
   }

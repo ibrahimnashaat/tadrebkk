@@ -43,7 +43,11 @@ class _CategoryPagesState extends State<CategoryPages> {
         var isPerson = model?.isPerson;
 
 
-        return  Scaffold(
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
+
+
+        return windowWidth >=1100 && windowHeight >=600 ? Scaffold(
           body: SingleChildScrollView(
             child: Column(
 
@@ -147,7 +151,7 @@ class _CategoryPagesState extends State<CategoryPages> {
               ],
             ),
           ),
-        );
+        ) : Container();
       },
     );
   }

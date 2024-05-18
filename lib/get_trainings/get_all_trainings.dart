@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../shared/colors.dart';
@@ -20,7 +21,11 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+
+    final windowWidth = MediaQuery.of(context).size.width;
+    final windowHeight = MediaQuery.of(context).size.height;
+
+    return  windowWidth >=1100 && windowHeight >=600 ?  Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -38,8 +43,8 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                     height: MediaQuery.of(context).size.height * 0.08,
                     child: Row(
                       children: [
-                        Text(
-                          'All',
+                        LocaleText(
+                          'all',
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -49,8 +54,8 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                         SizedBox(
                           width: 6,
                         ),
-                        Text(
-                          'Training',
+                        LocaleText(
+                          'training',
                           style: TextStyle(
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
@@ -60,8 +65,8 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
                         SizedBox(
                           width: 6,
                         ),
-                        Text(
-                          'Of',
+                        LocaleText(
+                          'of',
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -242,7 +247,7 @@ class _GetAllTrainingsState extends State<GetAllTrainings> {
           ],
         ),
       ),
-    );
+    ) : Container();
 
 
   }

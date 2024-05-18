@@ -50,3 +50,6 @@ class PostPeckerSuccessStates extends  PostStatus{}
 class PostPeckerErrorStates extends  PostStatus{}
 
 class RemovePostImage extends  PostStatus{}
+
+
+class RestartSuccessStates extends  PostStatus{}

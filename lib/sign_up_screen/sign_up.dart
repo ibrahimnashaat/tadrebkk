@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
@@ -54,7 +55,7 @@ class _SignUpState extends State<SignUp>{
 
 
             Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
             cachHelper.saveData(key: 'type', value: 'person');
 
 
@@ -74,7 +75,7 @@ class _SignUpState extends State<SignUp>{
           cachHelper.saveData(key: 'uId', value: state.uId);
 
         Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+        MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
         cachHelper.saveData(key: 'type', value: 'company');
 
           typeInter = isPerson.toString();
@@ -104,7 +105,11 @@ class _SignUpState extends State<SignUp>{
 
       },
       builder: (context, state) {
-        return Form(
+
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
+
+        return windowWidth >=1100 && windowHeight >=600 ? Form(
           key: _formKey,
           child: Scaffold(
             body: Container(
@@ -131,8 +136,8 @@ class _SignUpState extends State<SignUp>{
                               children: [
                                 Expanded(
                                   flex:2,
-                                  child: Text(
-                                    isPerson? 'Create Account as Person':'Create Account as Company',
+                                  child: LocaleText(
+                                    isPerson? 'create_person':'create_company',
                                     style: TextStyle(
                                       fontSize: 26,
                                       fontWeight: FontWeight.bold,
@@ -141,8 +146,8 @@ class _SignUpState extends State<SignUp>{
                                   ),
                                 ),
                                 Spacer(),
-                                Text(
-                                  'Already have an account?',
+                                LocaleText(
+                                  'already_have_account',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: mainFont,
@@ -166,8 +171,8 @@ class _SignUpState extends State<SignUp>{
                                       ),
                                     ),
                                     child: Center(
-                                      child: Text(
-                                        'Login',
+                                      child: LocaleText(
+                                        'login',
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
@@ -210,8 +215,8 @@ class _SignUpState extends State<SignUp>{
                                               color: isPerson ? mainColor : Colors.white,
                                             ),
                                             child: Center(
-                                              child: Text(
-                                                'Person',
+                                              child: LocaleText(
+                                                'person',
                                                 style: TextStyle(
                                                   color: isPerson ? Colors.white : Colors.black,
                                                   fontFamily: 'Poppins',
@@ -236,10 +241,10 @@ class _SignUpState extends State<SignUp>{
                                               color: isPerson ? Theme.of(context).scaffoldBackgroundColor : mainColor,
                                             ),
                                             child: Center(
-                                              child: Text(
-                                                'Company',
+                                              child: LocaleText(
+                                                'company',
                                                 style: TextStyle(
-                                                  color: isPerson ? Colors.black : Colors.white,
+                                                  color:ProfileCubit.get(context).isDark ? isPerson ? mainColor : Colors.white: isPerson ? Colors.black : Colors.white,
                                                   fontFamily: 'Poppins',
                                                   fontSize: 18,
                                                 ),
@@ -261,7 +266,7 @@ class _SignUpState extends State<SignUp>{
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('First Name*',
+                                        LocaleText('first_name',
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontFamily: mainFont,
@@ -273,7 +278,6 @@ class _SignUpState extends State<SignUp>{
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width * 0.14,
-                                          height: MediaQuery.of(context).size.height*0.06,
                                           child: TextFormField(
                                             keyboardType: TextInputType.name,
                                             controller: firstNameController,
@@ -323,7 +327,7 @@ class _SignUpState extends State<SignUp>{
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('Last Name*',
+                                        LocaleText('last_name',
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontFamily: mainFont,
@@ -335,7 +339,6 @@ class _SignUpState extends State<SignUp>{
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width * 0.14,
-                                          height: MediaQuery.of(context).size.height*0.06,
                                           child: TextFormField(
                                             keyboardType: TextInputType.name,
                                             controller: lastNameController,
@@ -386,7 +389,7 @@ class _SignUpState extends State<SignUp>{
                                 ) : Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   Text('Company Name*',
+                                   LocaleText('company_name',
                                      style: TextStyle(
                                          fontSize: 12,
                                          fontFamily: mainFont,
@@ -398,7 +401,6 @@ class _SignUpState extends State<SignUp>{
                                    ),
                                    SizedBox(
                                      width: MediaQuery.of(context).size.width * 0.3,
-                                     height: MediaQuery.of(context).size.height*0.06,
                                      child: TextFormField(
                                        keyboardType: TextInputType.name,
                                        controller: companyNameController,
@@ -450,7 +452,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Email Address*',
+                                    LocaleText('email_address',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -462,8 +464,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.emailAddress,
                                         controller: emailController,
                                         validator: (value) {
@@ -514,7 +515,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Password*',
+                                    LocaleText('password',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -526,8 +527,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.visiblePassword,
                                         controller: passwordController,
                                         obscureText: RegisterCubit.get(context).isNotVisible,
@@ -586,7 +586,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Confirm Password*',
+                                    LocaleText('confirm_password',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -598,8 +598,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.visiblePassword,
                                         controller: confirmPasswordController,
                                         obscureText: RegisterCubit.get(context).isNotVisible,
@@ -658,7 +657,7 @@ class _SignUpState extends State<SignUp>{
                                isPerson? Container() : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Specialization*',
+                                    LocaleText('specialization',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -670,8 +669,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.text,
                                         controller: specializationController,
                                         validator: (value) {
@@ -722,7 +720,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Phone Number*',
+                                    LocaleText('phone_number',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -734,8 +732,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.phone,
                                         controller: phoneNumberController,
                                         validator: (value) {
@@ -786,7 +783,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('City*',
+                                    LocaleText('city',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -798,8 +795,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.name,
                                         controller: cityController,
                                         validator: (value) {
@@ -850,7 +846,7 @@ class _SignUpState extends State<SignUp>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Street*',
+                                    LocaleText('street',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: mainFont,
@@ -862,8 +858,7 @@ class _SignUpState extends State<SignUp>{
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      height: MediaQuery.of(context).size.height*0.06,
-                                      child: TextFormField(
+                                       child: TextFormField(
                                         keyboardType: TextInputType.streetAddress,
                                         controller: streetController,
                                         validator: (value) {
@@ -966,7 +961,7 @@ class _SignUpState extends State<SignUp>{
                                       ),
                                     ),
                                     child: Center(
-                                      child: Text('Sign Up',
+                                      child: LocaleText('sign_up',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Poppins',
@@ -991,7 +986,7 @@ class _SignUpState extends State<SignUp>{
               ),
             ),
           ),
-        );
+        ) : Container();
       },
     );
   }

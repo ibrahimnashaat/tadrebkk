@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:tadrebk/home_screen/home_page.dart';
+import 'package:tadrebk/my_trainings/paid_trainings.dart';
 import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/components.dart';
 import 'package:tadrebk/shared/fonts.dart';
 
+import '../add_training/post.dart';
+import '../favorite_page/favorite_page.dart';
 import '../login_screen/login.dart';
+import '../my_trainings/my_trainings.dart';
 import '../shared/colors.dart';
 import '../shared/header_widget.dart';
 
@@ -46,8 +51,13 @@ class _ProfileState extends State<Profile> {
         var companyStreet = companyModel?.street;
         var isCompany = companyModel?.isPerson;
 
+        final windowWidth = MediaQuery.of(context).size.width;
+        final windowHeight = MediaQuery.of(context).size.height;
 
-        return  Scaffold(
+
+        return windowWidth >=1100 && windowHeight >=600 ? Scaffold(
+
+
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -64,8 +74,8 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'My Account',
+                        LocaleText(
+                          'my_account',
                           style: TextStyle(
                               fontSize: 26,
                               color: Colors.white,
@@ -126,26 +136,31 @@ class _ProfileState extends State<Profile> {
                                         fontSize: 12),
                                   ),
                                   Spacer(),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset(
-                                          'assets/images/img_31.png',
-                                          width: MediaQuery.of(context).size.width *
-                                              0.012,
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PaidTrainings()));
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: Image.asset(
+                                            'assets/images/img_31.png',
+                                            width: MediaQuery.of(context).size.width *
+                                                0.012,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 6,
-                                      ),
-                                      Text(
-                                        'My Training',
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins', fontSize: 10),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          width: 6,
+                                        ),
+                                        LocaleText(
+                                          'training',
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins', fontSize: 10),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Divider(),
                                   Row(
@@ -162,35 +177,40 @@ class _ProfileState extends State<Profile> {
                                       SizedBox(
                                         width: 6,
                                       ),
-                                      Text(
-                                        'Account settings',
+                                      LocaleText(
+                                        'account_settings',
                                         style: TextStyle(
                                             fontFamily: 'Poppins', fontSize: 10),
                                       ),
                                     ],
                                   ),
                                   Divider(),
-                                 isUser == "true" ?Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Icon(
-                                          Icons.favorite_outline_rounded,
-                                          color: mainColor,
-                                          size: 18,
+                                 isUser == "true" ?InkWell(
+                                   onTap: (){
+                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Favorite()));
+                                   },
+                                   child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: Icon(
+                                            Icons.favorite_outline_rounded,
+                                            color: mainColor,
+                                            size: 18,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 6,
-                                      ),
-                                      Text(
-                                        'My Favorite',
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins', fontSize: 10),
-                                      ),
-                                    ],
-                                  ) : Container(),
+                                        SizedBox(
+                                          width: 6,
+                                        ),
+                                        LocaleText(
+                                          'my_favorite',
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins', fontSize: 10),
+                                        ),
+                                      ],
+                                    ),
+                                 ) : Container(),
                                   isUser == "true" ? Divider() : Container(),
                                   InkWell(
                                     onTap: (){
@@ -218,8 +238,8 @@ class _ProfileState extends State<Profile> {
                                         SizedBox(
                                           width: 6,
                                         ),
-                                        Text(
-                                          'Logout',
+                                        LocaleText(
+                                          'logout',
                                           style: TextStyle(
                                               fontFamily: 'Poppins', fontSize: 10),
                                         ),
@@ -254,8 +274,8 @@ class _ProfileState extends State<Profile> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Text(
-                                    'Here you can manage your account and view details of the courses you have registered for, as well as the certificates you have obtained',
+                                  LocaleText(
+                                    'manage',
                                     style: TextStyle(
                                         fontFamily: 'Poppins', fontSize: 10),
                                     maxLines: 1,
@@ -300,8 +320,8 @@ class _ProfileState extends State<Profile> {
                                                   SizedBox(
                                                     height: 6,
                                                   ),
-                                                  Text(
-                                                    'Account settings',
+                                                  LocaleText(
+                                                    'account_settings',
                                                     style: TextStyle(
                                                         fontFamily: 'Poppins',
                                                         fontWeight: FontWeight.w600,
@@ -353,8 +373,8 @@ class _ProfileState extends State<Profile> {
                                                   SizedBox(
                                                     height: 6,
                                                   ),
-                                                  Text(
-                                                    'Certificate',
+                                                  LocaleText(
+                                                    'certificate',
                                                     style: TextStyle(
                                                         fontFamily: 'Poppins',
                                                         fontWeight:
@@ -386,35 +406,40 @@ class _ProfileState extends State<Profile> {
                                                 BorderRadius.circular(
                                                     0.0),
                                               ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        top: 8),
-                                                    child: Image.asset(
-                                                      'assets/images/img_33.png',
-                                                      width: MediaQuery.of(
-                                                          context)
-                                                          .size
-                                                          .width *
-                                                          0.03,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Post()));
+                                                },
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8),
+                                                      child: Image.asset(
+                                                        'assets/images/img_33.png',
+                                                        width: MediaQuery.of(
+                                                            context)
+                                                            .size
+                                                            .width *
+                                                            0.03,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 6,
-                                                  ),
-                                                  Text(
-                                                    'Add Training',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
+                                                    SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    LocaleText(
+                                                      'add_training',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -436,32 +461,37 @@ class _ProfileState extends State<Profile> {
                                                 borderRadius:
                                                 BorderRadius.circular(0.0),
                                               ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 8),
-                                                    child: Image.asset(
-                                                      'assets/images/img_31.png',
-                                                      width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                          0.03,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>MyTrainings()));
+                                                },
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(
+                                                          top: 8),
+                                                      child: Image.asset(
+                                                        'assets/images/img_31.png',
+                                                        width: MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                            0.03,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 6,
-                                                  ),
-                                                  Text(
-                                                    'My training',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
+                                                    SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    LocaleText(
+                                                      'my_training',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.w600,
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -482,7 +512,7 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
-        );
+        ):Container();
       },
     );
   }
