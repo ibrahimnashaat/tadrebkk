@@ -87,6 +87,7 @@ class _PaidTrainingsState extends State<PaidTrainings> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
+                          .where('isPaid', isEqualTo: true)
                           .snapshots(),
                       builder: (context, snapshots) {
                         return (snapshots.connectionState ==

@@ -363,7 +363,7 @@ class _TrainingDetailsState extends State<TrainingDetails> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: LocaleText("no", style: Theme.of(context).textTheme.labelLarge),
+                child: LocaleText("no", style: TextStyle(color: Colors.white),),
               ),
               TextButton(
                 onPressed: () async {
@@ -390,7 +390,7 @@ class _TrainingDetailsState extends State<TrainingDetails> {
                     },
                   );
                 },
-                child: LocaleText("yes", style: Theme.of(context).textTheme.labelLarge),
+                child: LocaleText("yes", style: TextStyle(color: Colors.white),),
               ),
             ],
           ),

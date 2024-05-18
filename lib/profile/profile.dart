@@ -218,6 +218,7 @@ class _ProfileState extends State<Profile> {
                                       ProfileCubit.get(context).resetUserAndCompanyData();
                                       cachHelper.removeData('uId').then((value) async {
                                         cachHelper.removeData('type');
+                                        cachHelper.removeData('isPaid');
                                         Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(builder: (context) => Login()), (route) => false,

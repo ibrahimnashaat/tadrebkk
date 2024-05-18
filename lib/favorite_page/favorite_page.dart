@@ -86,6 +86,7 @@ class _FavoriteState extends State<Favorite> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
+                          .where('isLiked', isEqualTo: true)
                           .snapshots(),
                       builder: (context, snapshots) {
                         return (snapshots.connectionState ==
