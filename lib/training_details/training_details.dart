@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -340,82 +342,107 @@ class _TrainingDetailsState extends State<TrainingDetails> {
 
 
   Widget applyButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        cachHelper.getData(key: 'uId') == null
-            ? Navigator.push(context, MaterialPageRoute(builder: (context) => Login()))
-            : cachHelper.getData(key: 'isPaid') == true
-            ? Navigator.push(context, MaterialPageRoute(builder: (context) => Certificate()))
-            : showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            backgroundColor: mainColor,
-            title: LocaleText(
-              "confirmation",
-              style: TextStyle(color: Colors.white),
-            ),
-            content: LocaleText(
-              "agreement",
-              style: TextStyle(color: Colors.white),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: LocaleText("no", style: TextStyle(color: Colors.white),),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('posts')
+          .where('uId', isEqualTo: widget.id)
+          .where('paymentUid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+          .snapshots(),
+      builder: (context, snapshots) {
+        if (snapshots.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        var data;
+        String isPayed = 'false';
+
+        if (!snapshots.hasError && snapshots.hasData && snapshots.data!.docs.isNotEmpty) {
+          data = snapshots.data!.docs.first;
+          isPayed = data['isPayed'] ?? 'false';
+        }
+
+        return InkWell(
+          onTap: () {
+            if (FirebaseAuth.instance.currentUser == null) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+            } else if (isPayed=='true') {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Certificate()));
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  backgroundColor: mainColor,
+                  title: LocaleText(
+                    "confirmation",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  content: LocaleText(
+                    "agreement",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: LocaleText("no", style: TextStyle(color: Colors.white)),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Payment(
+                              companyName: widget.companyName,
+                              city: widget.city,
+                              street: widget.street,
+                              trainingSpecialization: widget.specialization,
+                              trainingCost: widget.cost,
+                              trainingDescription: widget.description,
+                              startDate: widget.startDate,
+                              endDate: widget.endDate,
+                              trainingName: widget.trainingName,
+                              category: widget.category,
+                              id: widget.id,
+                              isLiked: widget.isLiked,
+                              isPaid: widget.isPaid,
+                              image: widget.image,
+                            );
+                          },
+                        );
+                      },
+                      child: LocaleText("yes", style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.width * 0.03,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [HexColor('#1B3358'), mainColor],
               ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Payment(
-                        companyName: widget.companyName,
-                        city: widget.city,
-                        street: widget.street,
-                        trainingSpecialization: widget.specialization,
-                        trainingCost: widget.cost,
-                        trainingDescription: widget.description,
-                        startDate: widget.startDate,
-                        endDate: widget.endDate,
-                        trainingName: widget.trainingName,
-                        category: widget.category,
-                        id: widget.id,
-                        isLiked: widget.isLiked,
-                        isPaid: widget.isPaid,
-                        image: widget.image,
-                      );
-                    },
-                  );
-                },
-                child: LocaleText("yes", style: TextStyle(color: Colors.white),),
+            ),
+            child: Center(
+              child: LocaleText(
+                isPayed == 'true' ? 'get_certificate' : 'apply_for_training',
+                style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 18),
               ),
-            ],
+            ),
           ),
         );
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.width * 0.03,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [HexColor('#1B3358'), mainColor],
-          ),
-        ),
-        child: Center(
-          child: LocaleText(
-            cachHelper.getData(key: 'isPaid') == true ? 'get_certificate' : 'apply_for_training',
-            style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 18),
-          ),
-        ),
-      ),
     );
   }
+
+
 
   Widget ratingRow() {
     return Row(

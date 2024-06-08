@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -133,6 +134,7 @@ class PostCubit extends Cubit<PostStatus> {
       startDate: startDate,
       endDate: endDate,
       isPaid: 'false',
+      paymentUid:'',
     );
 
     FirebaseFirestore.instance.collection("posts").add(model.toMap()).then((
@@ -153,6 +155,7 @@ class PostCubit extends Cubit<PostStatus> {
         startDate: startDate,
         endDate: endDate,
         id:documentReference.id,
+
       );
       emit(CreatePostSuccessStates());
 
@@ -161,7 +164,7 @@ class PostCubit extends Cubit<PostStatus> {
     });
   }
 
-  void updatePost({
+  Future<void> updatePost({
     String? image,
     required String companyName,
     required String city,
@@ -176,13 +179,17 @@ class PostCubit extends Cubit<PostStatus> {
     required String id,
      String? isLiked,
      String? isPaid,
-  }){
+     String? paymentUid,
+  }) async {
+
+
 
 
     PostModel model = PostModel(
       isLiked: isLiked ??'false',
-      companyUid: uId??'',
+      companyUid: FirebaseAuth.instance.currentUser!.uid??'',
       isPaid: isPaid??'false',
+      paymentUid:FirebaseAuth.instance.currentUser!.uid??'',
       uId: id,
       image: image,
       companyName: companyName,

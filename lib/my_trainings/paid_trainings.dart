@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -7,6 +8,7 @@ import 'package:tadrebk/profile/cubit.dart';
 import 'package:tadrebk/profile/states.dart';
 import 'package:tadrebk/shared/cach_helper.dart';
 import 'package:tadrebk/shared/components.dart';
+import 'package:tadrebk/shared/constant.dart';
 import 'package:tadrebk/shared/fonts.dart';
 
 import '../login_screen/login.dart';
@@ -87,7 +89,7 @@ class _PaidTrainingsState extends State<PaidTrainings> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
-                          .where('isPaid', isEqualTo: true)
+                          .where('companyUid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                           .snapshots(),
                       builder: (context, snapshots) {
                         return (snapshots.connectionState ==
@@ -112,7 +114,7 @@ class _PaidTrainingsState extends State<PaidTrainings> {
                             var data = snapshots.data!.docs[index]
                                 .data() as Map<String, dynamic>;
 
-                            return data['isPaid'] == 'true' ? trainingID(
+                            return trainingID(
                               image: data['image'] ?? '',
                               companyName: data['companyName'],
                               city: data['city'],
@@ -130,7 +132,7 @@ class _PaidTrainingsState extends State<PaidTrainings> {
                               isLiked: data['isLiked'],
                               isPaid: data['isPaid']??'',
                               context: context,
-                            ): Container();
+                            );
 
                           },
                         );

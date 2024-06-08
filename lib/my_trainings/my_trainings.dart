@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -98,6 +99,8 @@ class _MyTrainingsState extends State<MyTrainings> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
+                          .where('isPayed', isEqualTo: "true")
+                          .where('paymentUid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                           .snapshots(),
                       builder: (context, snapshots) {
                         return (snapshots.connectionState ==
@@ -122,7 +125,7 @@ class _MyTrainingsState extends State<MyTrainings> {
                             var data = snapshots.data!.docs[index]
                                 .data() as Map<String, dynamic>;
 
-                            return data['companyUid'] == 'uId' ? trainingID(
+                            return trainingID(
                               image: data['image'] ?? '',
                               companyName: data['companyName'],
                               city: data['city'],
@@ -140,7 +143,7 @@ class _MyTrainingsState extends State<MyTrainings> {
                               isLiked: data['isLiked'],
                               isPaid: data['isPaid']??'',
                               context: context,
-                            ): Container();
+                            );
 
                           },
                         );
