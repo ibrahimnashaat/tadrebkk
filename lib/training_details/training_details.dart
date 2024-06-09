@@ -366,7 +366,7 @@ class _TrainingDetailsState extends State<TrainingDetails> {
             if (FirebaseAuth.instance.currentUser == null) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
             } else if (isPayed=='true') {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Certificate()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Certificate(trainingName: widget.trainingName,)));
             } else {
               showDialog(
                 context: context,

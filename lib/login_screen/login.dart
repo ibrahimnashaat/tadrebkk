@@ -65,21 +65,27 @@ class _LoginState extends State<Login> {
                 final uId = FirebaseAuth.instance.currentUser?.uid;
                 FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
                   userModel=UserModel.fromJson(value.data()!);
-                  if(userModel!.isPerson == 'true'){
+
 
                     Navigator.pushAndRemoveUntil(context,
                         MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
                     cachHelper.saveData(key: 'type', value: 'person');
-                  }else{
 
-                    Navigator.pushAndRemoveUntil(context,
-                        MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
-                    cachHelper.saveData(key: 'type', value: 'company');
-                  }
 
 
                 }).catchError((e){
-                  print(e.toString());
+                  print("is company${e.toString()}");
+                });
+   FirebaseFirestore.instance.collection('companies').doc(uId).get().then((value) {
+                  userModel=UserModel.fromJson(value.data()!);
+
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) =>  HomePage()), (route) => false);
+                  cachHelper.saveData(key: 'type', value: 'company');
+
+
+                }).catchError((e){
+                  print("is person${e.toString()}");
                 });
 
 

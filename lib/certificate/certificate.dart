@@ -13,7 +13,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class Certificate extends StatefulWidget {
-  const Certificate({super.key});
+
+ final String trainingName;
+  const Certificate({required this.trainingName,super.key});
 
   @override
   State<Certificate> createState() => _CertificateState();
@@ -120,6 +122,10 @@ class _CertificateState extends State<Certificate> {
                             ),
                             Text('$firstName $lastName',style: TextStyle(fontSize: 40,fontFamily: mainFont),),
                             Positioned(
+                                top: MediaQuery.of(context).size.height * 0.8 / 1.5,
+                                right: MediaQuery.of(context).size.width / 2.15,
+                                child: Text(widget.trainingName,style: TextStyle(fontSize: 20,fontFamily: mainFont),)),
+                            Positioned(
                               top: MediaQuery.of(context).size.height * 0.8 / 1.3,
                               left: MediaQuery.of(context).size.width / 2.7,
                               child: Text(
@@ -170,6 +176,18 @@ class _CertificateState extends State<Certificate> {
                                           ),
                                         ),
                                       ),
+                                     pw.Positioned(
+                                       top: 420, // يمكنك تغيير هذه القيمة لتعديل موضع التاريخ بالنسبة للصورة
+                                       left: 220,
+                                       child:  pw.Text(
+                                         widget.trainingName,
+                                         style: pw.TextStyle(
+                                           font: ttf,
+                                           fontSize: 15,
+                                           color: PdfColors.black,
+                                         ),
+                                       ),
+                                     ),
                                       pw.Positioned(
                                         top: 450, // يمكنك تغيير هذه القيمة لتعديل موضع التاريخ بالنسبة للصورة
                                         left: 128, // يمكنك تغيير هذه القيمة لتعديل موضع التاريخ بالنسبة للصورة
