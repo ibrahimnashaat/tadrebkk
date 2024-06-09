@@ -545,6 +545,7 @@ void initState() {
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .collection('posts')
+
                                         .snapshots(),
                                     builder: (context, snapshots) {
                                       return (snapshots.connectionState ==

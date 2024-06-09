@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:typed_data';
 
 
@@ -157,7 +158,11 @@ class PostCubit extends Cubit<PostStatus> {
         id:documentReference.id,
 
       );
+
+
+
       emit(CreatePostSuccessStates());
+
 
     }).catchError((e) {
       emit(CreatePostErrorStates());

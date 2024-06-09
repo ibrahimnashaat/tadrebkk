@@ -7,6 +7,7 @@ import 'package:tadrebk/add_training/cubit.dart';
 import 'package:tadrebk/add_training/states.dart';
 import 'package:tadrebk/shared/fonts.dart';
 
+import '../my_trainings/paid_trainings.dart';
 import '../shared/colors.dart';
 import '../shared/header_widget.dart';
 
@@ -51,7 +52,11 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostStatus>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is CreatePostSuccessStates){
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>PaidTrainings()), (route) => false);
+          }
+        },
         builder: (context, state) {
           final windowWidth = MediaQuery.of(context).size.width;
           final windowHeight = MediaQuery.of(context).size.height;

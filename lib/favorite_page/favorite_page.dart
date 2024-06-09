@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -86,7 +87,8 @@ class _FavoriteState extends State<Favorite> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
-                          .where('isLiked', isEqualTo: true)
+                          .where('isLiked', isEqualTo: 'true')
+                          .where('paymentUid',isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                           .snapshots(),
                       builder: (context, snapshots) {
                         return (snapshots.connectionState ==
